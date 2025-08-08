@@ -11,13 +11,17 @@ import { useAuth } from '@/hooks/use-auth';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
 
     const navItems = [
         { href: '/', icon: Home, label: 'My Sightings' },
         { href: '/explore', icon: Compass, label: 'Explore Birds' },
         { href: '/ai-guesser', icon: BrainCircuit, label: 'AI Guesser' },
     ];
+
+    if (loading) {
+        return null;
+    }
 
     if (!user) {
         return <main>{children}</main>;

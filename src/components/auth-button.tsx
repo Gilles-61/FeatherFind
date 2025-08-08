@@ -14,6 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import React from 'react';
+import { usePathname } from 'next/navigation';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -27,12 +28,23 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function AuthButton() {
   const { user, signInWithGoogle, signOutUser, loading } = useAuth();
+  const pathname = usePathname();
 
   if (loading) {
-    return <Button variant="outline" size="sm" disabled>Loading...</Button>;
+    return <Button variant="outline" className="w-full" disabled>Loading...</Button>;
   }
 
-  if (user && !user.isAnonymous) {
+  // On the login page, we only want to show the Google Sign-In button
+  if (pathname === '/login') {
+     return (
+        <Button variant="outline" className="w-full" onClick={signInWithGoogle}>
+            <GoogleIcon className="mr-2 h-4 w-4" />
+            Sign in with Google
+        </Button>
+    );
+  }
+
+  if (user) {
     const userInitial = user.displayName?.charAt(0).toUpperCase() || <User size={18} />;
 
     return (
@@ -64,10 +76,7 @@ export function AuthButton() {
     );
   }
 
-  return (
-    <Button variant="outline" size="sm" onClick={signInWithGoogle}>
-        <GoogleIcon className="mr-2 h-4 w-4" />
-        Sign in with Google
-    </Button>
-  );
+  // This part should not be reached if the routing from page.tsx is correct,
+  // but it's here as a fallback.
+  return null;
 }

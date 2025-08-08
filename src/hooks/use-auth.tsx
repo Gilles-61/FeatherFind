@@ -2,15 +2,46 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, type User, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { 
+  onAuthStateChanged, 
+  type User, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  getAuth
+} from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
+
+// A helper function to format Firebase error messages
+const getFirebaseErrorMessage = (errorCode: string): string => {
+  switch (errorCode) {
+    case 'auth/user-not-found':
+      return 'No user found with this email.';
+    case 'auth/wrong-password':
+      return 'Incorrect password. Please try again.';
+    case 'auth/email-already-in-use':
+      return 'This email is already in use by another account.';
+    case 'auth/invalid-email':
+      return 'The email address is not valid.';
+    case 'auth/weak-password':
+      return 'The password is too weak. Please use a stronger password.';
+    default:
+      return 'An unexpected error occurred. Please try again.';
+  }
+};
+
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signUpWithEmail: (email: string, password: string, displayName: string) => Promise<string | null>;
+  signInWithEmail: (email: string, password: string) => Promise<string | null>;
   signOutUser: () => Promise<void>;
 }
 
@@ -18,6 +49,8 @@ const AuthContext = createContext<AuthContextType>({
   user: null, 
   loading: true,
   signInWithGoogle: async () => {},
+  signUpWithEmail: async () => null,
+  signInWithEmail: async () => null,
   signOutUser: async () => {},
 });
 
@@ -55,8 +88,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google sign-in failed:", error);
+      // You might want to show a toast notification to the user here
+    }
+  };
+
+  const signUpWithEmail = async (email: string, password: string, displayName: string): Promise<string | null> => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const currentUser = userCredential.user;
+      if (currentUser) {
+        await updateProfile(currentUser, { displayName });
+        // The onAuthStateChanged listener will handle setting the user and creating the Firestore doc.
+      }
+      return null;
+    } catch (error: any) {
+      console.error("Email/password sign-up failed:", error);
+      return getFirebaseErrorMessage(error.code);
+    }
+  };
+
+  const signInWithEmail = async (email: string, password: string): Promise<string | null> => {
+     try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // The onAuthStateChanged listener will handle the rest.
+      return null;
+    } catch (error: any) {
+      console.error("Email/password sign-in failed:", error);
+      return getFirebaseErrorMessage(error.code);
     }
   };
 
@@ -82,7 +142,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOutUser }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOutUser }}>
       {children}
     </AuthContext.Provider>
   );
