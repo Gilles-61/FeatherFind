@@ -50,7 +50,7 @@ const prompt = ai.definePrompt({
   input: { schema: GuessBirdFromDescriptionInputSchema },
   output: { schema: GuessBirdFromDescriptionOutputSchema },
   tools: [getBirdFacts],
-  prompt: `You are an expert ornithologist. Based on the following description of a bird sighting, suggest a list of possible bird species from a static bird database. For each suggested bird, if you think additional facts would be helpful, use the getBirdFacts tool to retrieve them and include them in the description. Return the bird's name, description (incorporating facts if used), and image URL. The output should be a JSON array of bird objects.
+  prompt: `You are an expert ornithologist. Based on the following description of a bird sighting, suggest a list of possible bird species from a static bird database. For each suggested bird, if you think additional facts would be in a useful addition to the description, use the getBirdFacts tool to retrieve them and include them in the description. Return the bird's name, description (incorporating facts if used), and image URL. The output should be a JSON array of bird objects.
 
 Description: {{{description}}}`,
 });
