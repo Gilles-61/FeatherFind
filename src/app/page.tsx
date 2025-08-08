@@ -4,7 +4,7 @@
 import React from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { MySightingsPage } from '@/components/my-sightings-page';
-import { redirect } from 'next/navigation';
+import { WelcomePage } from '@/components/welcome-page';
 
 
 export default function HomePage() {
@@ -16,7 +16,7 @@ export default function HomePage() {
   }
   
   if (!user) {
-    redirect('/login');
+    return <WelcomePage />;
   }
 
   return <MySightingsPage />;

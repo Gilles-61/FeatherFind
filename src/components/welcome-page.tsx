@@ -2,7 +2,6 @@
 "use client";
 
 import { Feather } from "lucide-react";
-import { AuthButton } from "./auth-button";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
@@ -18,7 +17,7 @@ export function WelcomePage() {
                     Your personal birdwatching companion. Log your sightings, explore new species, and let our AI help you identify mysterious birds.
                 </p>
                 <div>
-                  <Button asChild>
+                  <Button asChild size="lg">
                     <Link href="/login">Get Started</Link>
                   </Button>
                 </div>
