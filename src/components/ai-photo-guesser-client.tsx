@@ -8,7 +8,7 @@ import { getAiBirdSuggestionsFromPhoto, type GuesserState } from "@/app/ai-photo
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BirdCard } from "@/components/bird-card";
-import { Loader2, AlertCircle, Sparkles, Upload, Image as ImageIcon, Camera, SwitchCamera } from "lucide-react";
+import { Loader2, AlertCircle, Sparkles, Upload, Image as ImageIcon, Camera } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Card } from "./ui/card";
@@ -47,18 +47,18 @@ export function AIPhotoGuesserClient() {
   const { toast } = useToast();
 
    useEffect(() => {
+    const stream = videoRef.current?.srcObject as MediaStream;
     if (mode === "camera") {
       const getCameraPermission = async () => {
-        // Stop any existing streams
-        if (videoRef.current?.srcObject) {
-            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
         }
 
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const newStream = await navigator.mediaDevices.getUserMedia({ video: true });
           setHasCameraPermission(true);
           if (videoRef.current) {
-            videoRef.current.srcObject = stream;
+            videoRef.current.srcObject = newStream;
           }
         } catch (error) {
           console.error("Error accessing camera:", error);
@@ -72,18 +72,10 @@ export function AIPhotoGuesserClient() {
       };
       getCameraPermission();
     } else {
-        // Cleanup: stop camera stream when switching away from camera mode
-        if (videoRef.current?.srcObject) {
-            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
         }
     }
-
-    // Cleanup on component unmount
-    return () => {
-        if (videoRef.current?.srcObject) {
-            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
-        }
-    };
   }, [mode, toast]);
 
 
@@ -112,7 +104,7 @@ export function AIPhotoGuesserClient() {
         const dataUri = canvas.toDataURL("image/jpeg");
         setPreview(dataUri);
         setPhotoData(dataUri);
-        setMode("upload"); // Switch back to upload view to show preview
+        setMode("upload");
       }
     }
   };
@@ -120,18 +112,6 @@ export function AIPhotoGuesserClient() {
   const resetPhoto = () => {
     setPreview(null);
     setPhotoData(null);
-    if(mode === 'camera') {
-        // Re-enable camera if we were in camera mode
-        const video = videoRef.current;
-        if(video && video.srcObject) {
-            const stream = video.srcObject as MediaStream;
-            if(!stream.active) {
-                 navigator.mediaDevices.getUserMedia({ video: true }).then(newStream => {
-                     if (video) video.srcObject = newStream;
-                 });
-            }
-        }
-    }
   }
 
   return (
@@ -146,22 +126,22 @@ export function AIPhotoGuesserClient() {
             </TabsList>
             <TabsContent value="upload">
                  <Card className="p-6">
-                    <div className="flex items-center justify-center aspect-video border-2 border-dashed rounded-lg">
-                        {preview ? (
-                             <div className="relative w-full h-full">
-                                <Image src={preview} alt="Bird preview" layout="fill" className="object-contain rounded-md" />
-                                <Button variant="destructive" size="sm" onClick={resetPhoto} className="absolute top-2 right-2">
-                                    Retake
-                                </Button>
-                            </div>
-                        ) : (
+                    {preview ? (
+                         <div className="relative w-full aspect-video">
+                            <Image src={preview} alt="Bird preview" layout="fill" className="object-contain rounded-md" />
+                            <Button variant="destructive" size="sm" onClick={resetPhoto} className="absolute top-2 right-2">
+                                Retake
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-center aspect-video border-2 border-dashed rounded-lg">
                             <label htmlFor="photo-upload" className="text-center text-muted-foreground p-4 cursor-pointer">
                                 <ImageIcon className="mx-auto h-12 w-12" />
                                 <p>Click to browse or drop an image</p>
                                  <input id="photo-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                             </label>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </Card>
             </TabsContent>
             <TabsContent value="camera">
@@ -219,3 +199,5 @@ export function AIPhotoGuesserClient() {
     </div>
   );
 }
+
+  
