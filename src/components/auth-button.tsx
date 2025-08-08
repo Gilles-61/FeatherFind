@@ -12,10 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User as UserIcon } from "lucide-react";
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -58,7 +59,7 @@ export function AuthButton() {
   }
 
   if (user) {
-    const userInitial = user.displayName?.charAt(0).toUpperCase() || <User size={18} />;
+    const userInitial = user.displayName?.charAt(0).toUpperCase() || <UserIcon size={18} />;
 
     return (
       <DropdownMenu>
@@ -79,6 +80,13 @@ export function AuthButton() {
               </p>
             </div>
           </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+             <Link href="/profile">
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+             </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={signOutUser}>
             <LogOut className="mr-2 h-4 w-4" />
