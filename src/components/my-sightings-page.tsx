@@ -4,15 +4,18 @@
 import { useAuth } from "@/hooks/use-auth";
 import { getUserSightings } from "@/lib/data";
 import type { Sighting, Bird } from "@/types";
-import { useEffect, useState } from "react";
+import type { DocumentSnapshot, DocumentData } from "firebase/firestore";
+import { useEffect, useState, useTransition } from "react";
 import { SightingCard } from "@/components/sighting-card";
 import { AddSightingDialog } from "@/components/add-sighting-dialog";
 import { getBirds } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Compass, BrainCircuit, Bird as BirdIcon } from "lucide-react";
+import { Compass, BrainCircuit, Bird as BirdIcon, Loader2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
+
+const SIGHTINGS_PER_PAGE = 8;
 
 export function MySightingsPage() {
   const { user } = useAuth();
@@ -20,17 +23,23 @@ export function MySightingsPage() {
   const [sightings, setSightings] = useState<Sighting[]>([]);
   const [birds, setBirds] = useState<Bird[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPending, startTransition] = useTransition();
+
+  const [lastVisible, setLastVisible] = useState<DocumentSnapshot<DocumentData> | null>(null);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       if (user && !user.isAnonymous) {
         setLoading(true);
-        const [userSightings, allBirds] = await Promise.all([
-          getUserSightings(user.uid),
-          getBirds(),
-        ]);
-        setSightings(userSightings);
+        const allBirds = await getBirds();
         setBirds(allBirds);
+        
+        const { sightings: initialSightings, lastVisible: newLastVisible } = await getUserSightings(user.uid, SIGHTINGS_PER_PAGE);
+        setSightings(initialSightings);
+        setLastVisible(newLastVisible);
+        setHasMore(initialSightings.length === SIGHTINGS_PER_PAGE);
+        
         setLoading(false);
       } else {
         setLoading(false);
@@ -40,6 +49,17 @@ export function MySightingsPage() {
     }
     fetchData();
   }, [user]);
+
+  const loadMoreSightings = () => {
+    if (!user || !lastVisible) return;
+    
+    startTransition(async () => {
+      const { sightings: newSightings, lastVisible: newLastVisible } = await getUserSightings(user.uid, SIGHTINGS_PER_PAGE, lastVisible);
+      setSightings(prev => [...prev, ...newSightings]);
+      setLastVisible(newLastVisible);
+      setHasMore(newSightings.length === SIGHTINGS_PER_PAGE);
+    });
+  }
 
   if (!user || !dictionary) {
     return null;
@@ -59,7 +79,7 @@ export function MySightingsPage() {
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: SIGHTINGS_PER_PAGE }).map((_, i) => (
                 <div key={i} className="space-y-2">
                     <Skeleton className="h-40 w-full" />
                     <Skeleton className="h-4 w-3/4" />
@@ -68,11 +88,21 @@ export function MySightingsPage() {
             ))}
         </div>
       ) : sightings.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {sightings.map((sighting) => (
-            <SightingCard key={sighting.id} sighting={sighting} birds={birds} userId={user.uid} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {sightings.map((sighting) => (
+              <SightingCard key={sighting.id} sighting={sighting} birds={birds} userId={user.uid} />
+            ))}
+          </div>
+          {hasMore && (
+            <div className="text-center">
+              <Button onClick={loadMoreSightings} disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {pageDictionary.loadMore || 'Load More'}
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center space-y-4">
             <BirdIcon className="h-16 w-16 text-muted-foreground/50" />

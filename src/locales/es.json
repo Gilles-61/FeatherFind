@@ -52,7 +52,8 @@
         "noSightings": "Aún no hay avistamientos",
         "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento, explora especies de aves o pide ayuda a nuestra IA.",
         "exploreBirds": "Explorar Aves",
-        "useAiGuesser": "Usar Adivinador IA"
+        "useAiGuesser": "Usar Adivinador IA",
+        "loadMore": "Cargar Más"
     },
     "explorePage": {
         "title": "Explorar Aves",

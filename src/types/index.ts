@@ -1,5 +1,5 @@
 
-import type { Timestamp } from 'firebase/firestore';
+import type { Timestamp, DocumentSnapshot, DocumentData } from 'firebase/firestore';
 
 export interface Bird {
   id: string;
@@ -15,4 +15,9 @@ export interface Sighting {
   dateSeen: Timestamp | Date;
   notes: string;
   photoUrl?: string;
+}
+
+export interface PaginatedSightings {
+    sightings: Sighting[];
+    lastVisible: DocumentSnapshot<DocumentData> | null;
 }

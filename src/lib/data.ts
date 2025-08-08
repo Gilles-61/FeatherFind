@@ -1,7 +1,7 @@
 
 import { birds as localBirds } from '@/data/birds';
-import type { Bird, Sighting } from '@/types';
-import { collection, getDocs, doc, getDoc, query, orderBy, limit, startAfter } from 'firebase/firestore';
+import type { Bird, Sighting, PaginatedSightings } from '@/types';
+import { collection, getDocs, doc, getDoc, query, orderBy, limit, startAfter, type DocumentSnapshot, type DocumentData } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 // --- Bird Data ---
@@ -59,20 +59,35 @@ export async function getBirdById(id: string): Promise<Bird | undefined> {
 // --- Sighting Data ---
 // This function uses Firestore directly as it's user-specific and dynamic.
 
-export async function getUserSightings(userId: string): Promise<Sighting[]> {
-    if (!userId) return [];
+export async function getUserSightings(userId: string, count: number, lastVisible: DocumentSnapshot<DocumentData> | null = null): Promise<PaginatedSightings> {
+    if (!userId) return { sightings: [], lastVisible: null };
     try {
         const sightingsRef = collection(db, `users/${userId}/sightings`);
-        const q = query(sightingsRef, orderBy('dateSeen', 'desc'));
+        
+        const queryConstraints = [
+            orderBy('dateSeen', 'desc'),
+            limit(count)
+        ];
+
+        if (lastVisible) {
+            queryConstraints.push(startAfter(lastVisible));
+        }
+
+        const q = query(sightingsRef, ...queryConstraints);
         const querySnapshot = await getDocs(q);
+        
         const sightings = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         } as Sighting));
-        return sightings;
+
+        const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+
+        return { sightings, lastVisible: newLastVisible };
+
     } catch (error) {
         console.error('Error fetching sightings:', error);
         // In a real app, you might want to show an error to the user
-        return [];
+        return { sightings: [], lastVisible: null };
     }
 }
