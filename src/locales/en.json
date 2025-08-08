@@ -4,5 +4,33 @@
         "welcome": "Welcome to FeatherFind",
         "subtitle": "Your personal birdwatching companion. Log your sightings, explore new species, and let our AI help you identify mysterious birds.",
         "getStarted": "Get Started"
+    },
+    "loginPage": {
+        "subtitle": "Your personal birdwatching companion.",
+        "signIn": "Sign In",
+        "createAccount": "Create Account",
+        "orContinueWith": "Or continue with",
+        "loginForm": {
+            "title": "Welcome Back",
+            "description": "Enter your credentials to access your account.",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "forgotPassword": "Forgot Password?",
+            "buttonText": "Sign In",
+            "showPassword": "Show password",
+            "hidePassword": "Hide password"
+        },
+        "signupForm": {
+            "title": "Create an Account",
+            "description": "Join FeatherFind to start tracking your bird sightings.",
+            "displayNameLabel": "Display Name",
+            "displayNamePlaceholder": "Bird Watcher",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "confirmPasswordLabel": "Confirm Password",
+            "buttonText": "Create Account",
+            "showPassword": "Show password",
+            "hidePassword": "Hide password"
+        }
     }
 }

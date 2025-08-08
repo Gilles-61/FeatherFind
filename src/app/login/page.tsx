@@ -8,11 +8,25 @@ import { LoginForm } from '@/components/login-form';
 import { SignupForm } from '@/components/signup-form';
 import { useAuth } from '@/hooks/use-auth';
 import { redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { getDictionary } from '@/lib/i18n';
+
+// Defaulting to 'en', a language switcher would be needed for dynamic language changes.
+const lang = 'en';
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
+  const [dictionary, setDictionary] = useState<any>(null);
 
-  if (loading) {
+   useEffect(() => {
+    const fetchDictionary = async () => {
+      const dict = await getDictionary(lang);
+      setDictionary(dict.loginPage);
+    };
+    fetchDictionary();
+  }, []);
+
+  if (loading || !dictionary) {
     return null; // Or a loading spinner
   }
 
@@ -27,24 +41,24 @@ export default function LoginPage() {
           <Feather className="w-20 h-20 text-primary" />
           <h1 className="text-5xl font-headline font-bold text-primary">FeatherFind</h1>
           <p className="text-xl text-center text-muted-foreground">
-            Your personal birdwatching companion.
+            {dictionary.subtitle}
           </p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Create Account</TabsTrigger>
+            <TabsTrigger value="signin">{dictionary.signIn}</TabsTrigger>
+            <TabsTrigger value="signup">{dictionary.createAccount}</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-            <LoginForm />
+            <LoginForm dictionary={dictionary.loginForm} />
             <div className="relative mt-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
+                  {dictionary.orContinueWith}
                 </span>
               </div>
             </div>
@@ -53,7 +67,7 @@ export default function LoginPage() {
             </div>
           </TabsContent>
           <TabsContent value="signup">
-            <SignupForm />
+            <SignupForm dictionary={dictionary.signupForm} />
           </TabsContent>
         </Tabs>
       </div>

@@ -4,5 +4,33 @@
         "welcome": "Bienvenido a FeatherFind",
         "subtitle": "Tu compañero personal de observación de aves. Registra tus avistamientos, explora nuevas especies y deja que nuestra IA te ayude a identificar aves misteriosas.",
         "getStarted": "Empezar"
+    },
+    "loginPage": {
+        "subtitle": "Tu compañero personal de observación de aves.",
+        "signIn": "Iniciar Sesión",
+        "createAccount": "Crear Cuenta",
+        "orContinueWith": "O continuar con",
+        "loginForm": {
+            "title": "Bienvenido de Nuevo",
+            "description": "Introduce tus credenciales para acceder a tu cuenta.",
+            "emailLabel": "Correo Electrónico",
+            "passwordLabel": "Contraseña",
+            "forgotPassword": "¿Olvidaste la contraseña?",
+            "buttonText": "Iniciar Sesión",
+            "showPassword": "Mostrar contraseña",
+            "hidePassword": "Ocultar contraseña"
+        },
+        "signupForm": {
+            "title": "Crear una Cuenta",
+            "description": "Únete a FeatherFind para empezar a registrar tus avistamientos de aves.",
+            "displayNameLabel": "Nombre de Usuario",
+            "displayNamePlaceholder": "Observador de Aves",
+            "emailLabel": "Correo Electrónico",
+            "passwordLabel": "Contraseña",
+            "confirmPasswordLabel": "Confirmar Contraseña",
+            "buttonText": "Crear Cuenta",
+            "showPassword": "Mostrar contraseña",
+            "hidePassword": "Ocultar contraseña"
+        }
     }
 }

@@ -25,7 +25,7 @@ const SignupFormSchema = z.object({
 
 type SignupFormData = z.infer<typeof SignupFormSchema>;
 
-export function SignupForm() {
+export function SignupForm({ dictionary }: { dictionary: any }) {
   const { signUpWithEmail } = useAuth();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -63,8 +63,8 @@ export function SignupForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
-        <CardDescription>Join FeatherFind to start tracking your bird sightings.</CardDescription>
+        <CardTitle className="font-headline text-2xl">{dictionary.title}</CardTitle>
+        <CardDescription>{dictionary.description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -74,9 +74,9 @@ export function SignupForm() {
               name="displayName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Display Name</FormLabel>
+                  <FormLabel>{dictionary.displayNameLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Bird Watcher" {...field} />
+                    <Input placeholder={dictionary.displayNamePlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +87,7 @@ export function SignupForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{dictionary.emailLabel}</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="you@example.com" {...field} />
                   </FormControl>
@@ -100,7 +100,7 @@ export function SignupForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{dictionary.passwordLabel}</FormLabel>
                   <FormControl>
                      <div className="relative">
                         <Input type={showPassword ? 'text' : 'password'} placeholder="••••••••" {...field} />
@@ -112,7 +112,7 @@ export function SignupForm() {
                             onClick={() => setShowPassword(prev => !prev)}
                         >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                            <span className="sr-only">{showPassword ? dictionary.hidePassword : dictionary.showPassword}</span>
                         </Button>
                     </div>
                   </FormControl>
@@ -125,7 +125,7 @@ export function SignupForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{dictionary.confirmPasswordLabel}</FormLabel>
                   <FormControl>
                      <div className="relative">
                         <Input type={showConfirmPassword ? 'text' : 'password'} placeholder="••••••••" {...field} />
@@ -137,7 +137,7 @@ export function SignupForm() {
                             onClick={() => setShowConfirmPassword(prev => !prev)}
                         >
                             {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            <span className="sr-only">{showConfirmPassword ? 'Hide password' : 'Show password'}</span>
+                            <span className="sr-only">{showConfirmPassword ? dictionary.hidePassword : dictionary.showPassword}</span>
                         </Button>
                     </div>
                   </FormControl>
@@ -147,7 +147,7 @@ export function SignupForm() {
             />
             <Button type="submit" className="w-full" disabled={isPending}>
                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Create Account
+              {dictionary.buttonText}
             </Button>
           </form>
         </Form>

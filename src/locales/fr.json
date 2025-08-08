@@ -4,5 +4,33 @@
         "welcome": "Bienvenue sur FeatherFind",
         "subtitle": "Votre compagnon personnel d'observation des oiseaux. Enregistrez vos observations, explorez de nouvelles espèces et laissez notre IA vous aider à identifier les oiseaux mystérieux.",
         "getStarted": "Commencer"
+    },
+    "loginPage": {
+        "subtitle": "Votre compagnon personnel d'observation des oiseaux.",
+        "signIn": "Se Connecter",
+        "createAccount": "Créer un Compte",
+        "orContinueWith": "Ou continuer avec",
+        "loginForm": {
+            "title": "Content de vous revoir",
+            "description": "Saisissez vos identifiants pour accéder à votre compte.",
+            "emailLabel": "Email",
+            "passwordLabel": "Mot de passe",
+            "forgotPassword": "Mot de passe oublié?",
+            "buttonText": "Se Connecter",
+            "showPassword": "Afficher le mot de passe",
+            "hidePassword": "Masquer le mot de passe"
+        },
+        "signupForm": {
+            "title": "Créer un Compte",
+            "description": "Rejoignez FeatherFind pour commencer à suivre vos observations d'oiseaux.",
+            "displayNameLabel": "Nom d'utilisateur",
+            "displayNamePlaceholder": "Observateur d'oiseaux",
+            "emailLabel": "Email",
+            "passwordLabel": "Mot de passe",
+            "confirmPasswordLabel": "Confirmer le mot de passe",
+            "buttonText": "Créer un Compte",
+            "showPassword": "Afficher le mot de passe",
+            "hidePassword": "Masquer le mot de passe"
+        }
     }
 }

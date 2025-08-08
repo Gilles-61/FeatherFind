@@ -20,7 +20,7 @@ const LoginFormSchema = z.object({
 
 type LoginFormData = z.infer<typeof LoginFormSchema>;
 
-export function LoginForm() {
+export function LoginForm({ dictionary }: { dictionary: any }) {
   const { signInWithEmail, sendPasswordReset } = useAuth();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -83,8 +83,8 @@ export function LoginForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
-        <CardDescription>Enter your credentials to access your account.</CardDescription>
+        <CardTitle className="font-headline text-2xl">{dictionary.title}</CardTitle>
+        <CardDescription>{dictionary.description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -94,7 +94,7 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{dictionary.emailLabel}</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="you@example.com" {...field} />
                   </FormControl>
@@ -108,9 +108,9 @@ export function LoginForm() {
               render={({ field }) => (
                 <FormItem>
                    <div className="flex items-center justify-between">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{dictionary.passwordLabel}</FormLabel>
                     <button type="button" onClick={handlePasswordReset} className="text-sm font-medium text-primary hover:underline focus:outline-none">
-                        Forgot Password?
+                        {dictionary.forgotPassword}
                     </button>
                   </div>
                   <FormControl>
@@ -124,7 +124,7 @@ export function LoginForm() {
                             onClick={() => setShowPassword(prev => !prev)}
                         >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                            <span className="sr-only">{showPassword ? dictionary.hidePassword : dictionary.showPassword}</span>
                         </Button>
                     </div>
                   </FormControl>
@@ -134,7 +134,7 @@ export function LoginForm() {
             />
             <Button type="submit" className="w-full" disabled={isPending}>
                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Sign In
+              {dictionary.buttonText}
             </Button>
           </form>
         </Form>
