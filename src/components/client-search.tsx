@@ -8,7 +8,7 @@ import { BirdCard } from "@/components/bird-card";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-export function ClientSearch({ birds }: { birds: Bird[] }) {
+export function ClientSearch({ birds, dictionary }: { birds: Bird[], dictionary: any }) {
   const [search, setSearch] = useState("");
 
   const filteredBirds = birds.filter((bird) =>
@@ -21,7 +21,7 @@ export function ClientSearch({ birds }: { birds: Bird[] }) {
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
         <Input
           type="text"
-          placeholder="Search for a bird..."
+          placeholder={dictionary.searchPlaceholder}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-lg mx-auto pl-12"
@@ -38,7 +38,7 @@ export function ClientSearch({ birds }: { birds: Bird[] }) {
         </div>
       ) : (
         <div className="text-center py-16">
-            <p className="text-muted-foreground">No birds found matching your search.</p>
+            <p className="text-muted-foreground">{dictionary.noResults}</p>
         </div>
       )}
     </div>

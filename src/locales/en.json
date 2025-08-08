@@ -53,5 +53,11 @@
         "noSightingsDescription": "It looks like your birdwatching journal is empty. Add your first sighting, explore bird species, or get help from our AI.",
         "exploreBirds": "Explore Birds",
         "useAiGuesser": "Use AI Guesser"
+    },
+    "explorePage": {
+        "title": "Explore Birds",
+        "subtitle": "Discover the variety of birds in our database.",
+        "searchPlaceholder": "Search for a bird...",
+        "noResults": "No birds found matching your search."
     }
 }

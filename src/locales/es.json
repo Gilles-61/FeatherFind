@@ -53,5 +53,11 @@
         "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento, explora especies de aves o pide ayuda a nuestra IA.",
         "exploreBirds": "Explorar Aves",
         "useAiGuesser": "Usar Adivinador IA"
+    },
+    "explorePage": {
+        "title": "Explorar Aves",
+        "subtitle": "Descubre la variedad de aves en nuestra base de datos.",
+        "searchPlaceholder": "Buscar un pájaro...",
+        "noResults": "No se encontraron aves que coincidan con tu búsqueda."
     }
 }

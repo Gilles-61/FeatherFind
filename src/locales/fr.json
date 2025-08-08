@@ -53,5 +53,11 @@
         "noSightingsDescription": "Il semble que votre journal d'observation d'oiseaux soit vide. Ajoutez votre première observation, explorez des espèces d'oiseaux ou demandez de l'aide à notre IA.",
         "exploreBirds": "Explorer les Oiseaux",
         "useAiGuesser": "Utiliser le Devin IA"
+    },
+    "explorePage": {
+        "title": "Explorer les Oiseaux",
+        "subtitle": "Découvrez la variété d'oiseaux dans notre base de données.",
+        "searchPlaceholder": "Rechercher un oiseau...",
+        "noResults": "Aucun oiseau trouvé correspondant à votre recherche."
     }
 }
