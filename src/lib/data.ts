@@ -59,15 +59,31 @@ export async function getBirdById(id: string): Promise<Bird | undefined> {
 // --- Sighting Data ---
 // This function uses Firestore directly as it's user-specific and dynamic.
 
-export async function getUserSightings(userId: string, count: number, lastVisible: DocumentSnapshot<DocumentData> | null = null): Promise<PaginatedSightings> {
-    if (!userId) return { sightings: [], lastVisible: null };
+export async function getUserSightings(
+    userId: string
+): Promise<Sighting[]>;
+export async function getUserSightings(
+    userId: string,
+    count: number,
+    lastVisible?: DocumentSnapshot<DocumentData> | null
+): Promise<PaginatedSightings>;
+export async function getUserSightings(
+    userId: string,
+    count?: number,
+    lastVisible: DocumentSnapshot<DocumentData> | null = null
+): Promise<Sighting[] | PaginatedSightings> {
+    if (!userId) {
+        return count !== undefined ? { sightings: [], lastVisible: null } : [];
+    }
+
     try {
         const sightingsRef = collection(db, `users/${userId}/sightings`);
         
-        const queryConstraints = [
-            orderBy('dateSeen', 'desc'),
-            limit(count)
-        ];
+        const queryConstraints = [orderBy('dateSeen', 'desc')];
+        
+        if (count !== undefined) {
+            queryConstraints.push(limit(count));
+        }
 
         if (lastVisible) {
             queryConstraints.push(startAfter(lastVisible));
@@ -81,13 +97,15 @@ export async function getUserSightings(userId: string, count: number, lastVisibl
             ...doc.data()
         } as Sighting));
 
-        const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+        if (count !== undefined) {
+            const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+            return { sightings, lastVisible: newLastVisible };
+        }
 
-        return { sightings, lastVisible: newLastVisible };
+        return sightings;
 
     } catch (error) {
         console.error('Error fetching sightings:', error);
-        // In a real app, you might want to show an error to the user
-        return { sightings: [], lastVisible: null };
+        return count !== undefined ? { sightings: [], lastVisible: null } : [];
     }
 }
