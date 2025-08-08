@@ -8,10 +8,12 @@ import { getAiBirdSuggestionsFromPhoto, type GuesserState } from "@/app/ai-photo
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BirdCard } from "@/components/bird-card";
-import { Loader2, AlertCircle, Sparkles, Upload, Image as ImageIcon } from "lucide-react";
-import React, { useState } from "react";
+import { Loader2, AlertCircle, Sparkles, Upload, Image as ImageIcon, Camera, SwitchCamera } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Card } from "./ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 const initialState: GuesserState = {};
 
@@ -38,6 +40,52 @@ export function AIPhotoGuesserClient() {
   const [state, formAction] = useActionState(getAiBirdSuggestionsFromPhoto, initialState);
   const [preview, setPreview] = useState<string | null>(null);
   const [photoData, setPhotoData] = useState<string | null>(null);
+  const [mode, setMode] = useState<"upload" | "camera">("upload");
+  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { toast } = useToast();
+
+   useEffect(() => {
+    if (mode === "camera") {
+      const getCameraPermission = async () => {
+        // Stop any existing streams
+        if (videoRef.current?.srcObject) {
+            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setHasCameraPermission(true);
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (error) {
+          console.error("Error accessing camera:", error);
+          setHasCameraPermission(false);
+          toast({
+            variant: "destructive",
+            title: "Camera Access Denied",
+            description: "Please enable camera permissions in your browser settings to use this feature.",
+          });
+        }
+      };
+      getCameraPermission();
+    } else {
+        // Cleanup: stop camera stream when switching away from camera mode
+        if (videoRef.current?.srcObject) {
+            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        }
+    }
+
+    // Cleanup on component unmount
+    return () => {
+        if (videoRef.current?.srcObject) {
+            (videoRef.current.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+        }
+    };
+  }, [mode, toast]);
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -52,37 +100,94 @@ export function AIPhotoGuesserClient() {
     }
   };
 
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUri = canvas.toDataURL("image/jpeg");
+        setPreview(dataUri);
+        setPhotoData(dataUri);
+        setMode("upload"); // Switch back to upload view to show preview
+      }
+    }
+  };
+  
+  const resetPhoto = () => {
+    setPreview(null);
+    setPhotoData(null);
+    if(mode === 'camera') {
+        // Re-enable camera if we were in camera mode
+        const video = videoRef.current;
+        if(video && video.srcObject) {
+            const stream = video.srcObject as MediaStream;
+            if(!stream.active) {
+                 navigator.mediaDevices.getUserMedia({ video: true }).then(newStream => {
+                     if (video) video.srcObject = newStream;
+                 });
+            }
+        }
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <form action={formAction} className="space-y-4">
         <input type="hidden" name="photo" value={photoData || ""} />
-        <Card className="p-6">
-            <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-4">
-                    <label htmlFor="photo-upload" className="font-medium text-lg">Upload Photo</label>
-                    <p className="text-muted-foreground">Select an image file from your device. For best results, use a clear photo of a single bird.</p>
-                    <div className="flex items-center gap-2">
-                        <Button asChild variant="outline">
-                            <label htmlFor="photo-upload" className="cursor-pointer">
-                                <Upload className="mr-2 h-4 w-4" />
-                                Choose File
+
+        <Tabs value={mode} onValueChange={(value) => setMode(value as any)} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4"/>Upload Photo</TabsTrigger>
+                <TabsTrigger value="camera"><Camera className="mr-2 h-4 w-4"/>Use Camera</TabsTrigger>
+            </TabsList>
+            <TabsContent value="upload">
+                 <Card className="p-6">
+                    <div className="flex items-center justify-center aspect-video border-2 border-dashed rounded-lg">
+                        {preview ? (
+                             <div className="relative w-full h-full">
+                                <Image src={preview} alt="Bird preview" layout="fill" className="object-contain rounded-md" />
+                                <Button variant="destructive" size="sm" onClick={resetPhoto} className="absolute top-2 right-2">
+                                    Retake
+                                </Button>
+                            </div>
+                        ) : (
+                            <label htmlFor="photo-upload" className="text-center text-muted-foreground p-4 cursor-pointer">
+                                <ImageIcon className="mx-auto h-12 w-12" />
+                                <p>Click to browse or drop an image</p>
+                                 <input id="photo-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                             </label>
-                        </Button>
-                        <input id="photo-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                        )}
                     </div>
-                </div>
-                <div className="flex items-center justify-center aspect-video border-2 border-dashed rounded-lg">
-                    {preview ? (
-                        <Image src={preview} alt="Bird preview" width={400} height={225} className="object-contain rounded-md" />
-                    ) : (
-                        <div className="text-center text-muted-foreground p-4">
-                            <ImageIcon className="mx-auto h-12 w-12" />
-                            <p>Image preview will appear here</p>
-                        </div>
+                </Card>
+            </TabsContent>
+            <TabsContent value="camera">
+                <Card className="p-6">
+                   <div className="flex items-center justify-center aspect-video border-2 border-dashed rounded-lg bg-black">
+                        <video ref={videoRef} className="w-full h-full object-contain" autoPlay muted playsInline />
+                        <canvas ref={canvasRef} className="hidden"></canvas>
+                   </div>
+                    {hasCameraPermission === false && (
+                        <Alert variant="destructive" className="mt-4">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertTitle>Camera Access Denied</AlertTitle>
+                            <AlertDescription>
+                                To use your camera, please grant permission in your browser settings.
+                            </AlertDescription>
+                        </Alert>
                     )}
-                </div>
-            </div>
-        </Card>
+                    <div className="mt-4 flex justify-center">
+                        <Button type="button" onClick={handleCapture} disabled={!hasCameraPermission}>
+                            <Camera className="mr-2 h-4 w-4"/>
+                            Capture Photo
+                        </Button>
+                    </div>
+                </Card>
+            </TabsContent>
+        </Tabs>
         
         {state?.message && <p className="text-sm font-medium text-destructive">{state.message}</p>}
 
