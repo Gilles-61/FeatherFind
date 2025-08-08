@@ -48,7 +48,7 @@ export function AIPhotoGuesserClient({ dictionary }: { dictionary: any }) {
 
    useEffect(() => {
     const stream = videoRef.current?.srcObject as MediaStream;
-    if (mode === "camera") {
+    if (mode === "camera" && dictionary) {
       const getCameraPermission = async () => {
         if (stream) {
             stream.getTracks().forEach(track => track.stop());
@@ -78,6 +78,9 @@ export function AIPhotoGuesserClient({ dictionary }: { dictionary: any }) {
     }
   }, [mode, toast, dictionary]);
 
+  if (!dictionary) {
+    return null; // Or a loading skeleton
+  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -199,5 +202,3 @@ export function AIPhotoGuesserClient({ dictionary }: { dictionary: any }) {
     </div>
   );
 }
-
-  
