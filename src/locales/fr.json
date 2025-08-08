@@ -73,5 +73,30 @@
             "noBirdsFound": "Impossible d'identifier des oiseaux à partir de votre description. Veuillez essayer de le décrire différemment.",
             "unavailable": "Le devin IA est actuellement indisponible. Veuillez réessayer plus tard."
         }
+    },
+    "aiPhotoGuesserPage": {
+        "title": "Devin IA par Photo",
+        "subtitle": "Téléchargez une photo d'un oiseau, et notre IA essaiera de l'identifier pour vous.",
+        "buttonIdle": "Deviner l'Oiseau",
+        "buttonPending": "Identification...",
+        "errorTitle": "Erreur",
+        "suggestionsTitle": "Suggestions de l'IA",
+        "uploadTab": "Télécharger une Photo",
+        "cameraTab": "Utiliser la Caméra",
+        "uploadPlaceholder": "Cliquez pour parcourir ou déposez une image",
+        "imageAlt": "Aperçu de l'oiseau",
+        "retakeButton": "Reprendre",
+        "captureButton": "Capturer la Photo",
+        "cameraError": {
+            "title": "Accès à la caméra refusé",
+            "description": "Veuillez activer les autorisations de la caméra dans les paramètres de votre navigateur pour utiliser cette fonctionnalité.",
+            "permission": "Pour utiliser votre caméra, veuillez accorder la permission dans les paramètres de votre navigateur."
+        },
+        "errors": {
+            "photoRequired": "Veuillez télécharger une photo.",
+            "invalid_photo": "Photo invalide.",
+            "noBirdsFound": "Impossible d'identifier un oiseau sur votre photo. Veuillez essayer une autre image.",
+            "unavailable": "Le devin IA est actuellement indisponible. Veuillez réessayer plus tard."
+        }
     }
 }

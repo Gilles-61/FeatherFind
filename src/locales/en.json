@@ -73,5 +73,30 @@
             "noBirdsFound": "Could not identify any birds from your description. Please try describing it differently.",
             "unavailable": "The AI guesser is currently unavailable. Please try again later."
         }
+    },
+    "aiPhotoGuesserPage": {
+        "title": "AI Photo Guesser",
+        "subtitle": "Upload a photo of a bird, and our AI will try to identify it for you.",
+        "buttonIdle": "Guess the Bird",
+        "buttonPending": "Identifying...",
+        "errorTitle": "Error",
+        "suggestionsTitle": "AI Suggestions",
+        "uploadTab": "Upload Photo",
+        "cameraTab": "Use Camera",
+        "uploadPlaceholder": "Click to browse or drop an image",
+        "imageAlt": "Bird preview",
+        "retakeButton": "Retake",
+        "captureButton": "Capture Photo",
+        "cameraError": {
+            "title": "Camera Access Denied",
+            "description": "Please enable camera permissions in your browser settings to use this feature.",
+            "permission": "To use your camera, please grant permission in your browser settings."
+        },
+        "errors": {
+            "photoRequired": "Please upload a photo.",
+            "invalid_photo": "Invalid photo provided.",
+            "noBirdsFound": "Could not identify any birds from your photo. Please try a different image.",
+            "unavailable": "The AI guesser is currently unavailable. Please try again later."
+        }
     }
 }

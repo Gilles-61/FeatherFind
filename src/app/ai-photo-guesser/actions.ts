@@ -5,10 +5,20 @@ import { guessBirdFromPhoto } from "@/ai/flows/guess-bird-from-photo";
 import { getBirds } from '@/lib/data';
 import type { Bird } from '@/types';
 import { z } from 'zod';
+import { getDictionary } from "@/lib/i18n";
 
-const FormSchema = z.object({
-  photo: z.string().min(1, { message: "Please upload a photo." }),
-});
+// Defaulting to 'en' for now
+const lang = 'en';
+
+
+const getFormSchema = async () => {
+    const dictionary = await getDictionary(lang);
+    const errorMessages = dictionary.aiPhotoGuesserPage.errors;
+    return z.object({
+      photo: z.string().min(1, { message: errorMessages.photoRequired }),
+    });
+}
+
 
 export type GuesserState = {
   suggestions?: Bird[];
@@ -20,22 +30,26 @@ export async function getAiBirdSuggestionsFromPhoto(
   prevState: GuesserState,
   formData: FormData
 ): Promise<GuesserState> {
+  const FormSchema = await getFormSchema();
   const validatedFields = FormSchema.safeParse({
     photo: formData.get("photo"),
   });
 
   if (!validatedFields.success) {
     return {
-      error: "Invalid photo.",
+      error: "invalid_photo", // error key
       message: validatedFields.error.flatten().fieldErrors.photo?.join(", "),
     };
   }
+  
+  const dictionary = await getDictionary(lang);
+  const errorMessages = dictionary.aiPhotoGuesserPage.errors;
 
   try {
     const suggestionsFromAi = await guessBirdFromPhoto({ photoDataUri: validatedFields.data.photo });
     
     if (!suggestionsFromAi || suggestionsFromAi.length === 0) {
-      return { error: "Could not identify any birds from your photo. Please try a different image." };
+      return { error: errorMessages.noBirdsFound };
     }
 
     const allBirds = await getBirds();
@@ -60,6 +74,6 @@ export async function getAiBirdSuggestionsFromPhoto(
 
   } catch (e) {
     console.error(e);
-    return { error: "The AI guesser is currently unavailable. Please try again later." };
+    return { error: errorMessages.unavailable };
   }
 }
