@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
@@ -18,7 +19,7 @@ export function MySightingsPage() {
 
   useEffect(() => {
     async function fetchData() {
-      if (user) {
+      if (user && !user.isAnonymous) {
         setLoading(true);
         const [userSightings, allBirds] = await Promise.all([
           getUserSightings(user.uid),
@@ -27,11 +28,17 @@ export function MySightingsPage() {
         setSightings(userSightings);
         setBirds(allBirds);
         setLoading(false);
+      } else {
+        // Handle case where there is no user or user is anonymous
+        setLoading(false);
+        setSightings([]);
+        setBirds([]);
       }
     }
     fetchData();
   }, [user]);
 
+  // This should not happen if page.tsx is gating correctly, but good for safety
   if (!user) {
     return null;
   }
