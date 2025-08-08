@@ -4,12 +4,13 @@ import { getFirestore } from 'firebase/firestore';
 
 // Firebase configuration with placeholder values
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  "projectId": "featherfind-mf7x1",
+  "appId": "1:1037568735635:web:74688b9d8e5abd50011066",
+  "storageBucket": "featherfind-mf7x1.firebasestorage.app",
+  "apiKey": "AIzaSyARzWAauCc_ggCMhj1PdEQ-fX4tOdDp_98",
+  "authDomain": "featherfind-mf7x1.firebaseapp.com",
+  "measurementId": "",
+  "messagingSenderId": "1037568735635"
 };
 
 // Initialize Firebase
