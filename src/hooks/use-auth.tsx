@@ -11,6 +11,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  sendPasswordResetEmail,
   getAuth
 } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
@@ -30,6 +31,8 @@ const getFirebaseErrorMessage = (errorCode: string): string => {
       return 'The email address is not valid.';
     case 'auth/weak-password':
       return 'The password is too weak. Please use a stronger password.';
+     case 'auth/missing-password':
+      return 'Password is required.';
     default:
       return 'An unexpected error occurred. Please try again.';
   }
@@ -43,6 +46,7 @@ interface AuthContextType {
   signUpWithEmail: (email: string, password: string, displayName: string) => Promise<string | null>;
   signInWithEmail: (email: string, password: string) => Promise<string | null>;
   signOutUser: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType>({ 
@@ -52,6 +56,7 @@ const AuthContext = createContext<AuthContextType>({
   signUpWithEmail: async () => null,
   signInWithEmail: async () => null,
   signOutUser: async () => {},
+  sendPasswordReset: async () => null,
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -127,6 +132,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Sign-out failed:", error);
     }
   };
+  
+  const sendPasswordReset = async (email: string): Promise<string | null> => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return null;
+    } catch (error: any) {
+      console.error("Password reset failed:", error);
+      return getFirebaseErrorMessage(error.code);
+    }
+  };
 
 
   if (loading) {
@@ -142,7 +157,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOutUser }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, signOutUser, sendPasswordReset }}>
       {children}
     </AuthContext.Provider>
   );

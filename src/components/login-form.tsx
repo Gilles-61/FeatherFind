@@ -11,19 +11,23 @@ import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useTransition } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 const LoginFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  password: z.string().min(1, { message: 'Password is required.' }),
 });
 
 type LoginFormData = z.infer<typeof LoginFormSchema>;
 
 export function LoginForm() {
-  const { signInWithEmail } = useAuth();
+  const { signInWithEmail, sendPasswordReset } = useAuth();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [showPassword, setShowPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
@@ -51,6 +55,33 @@ export function LoginForm() {
     });
   };
 
+  const handlePasswordReset = () => {
+    const email = form.getValues('email');
+    if (!email) {
+      toast({
+        title: 'Email required',
+        description: 'Please enter your email address to reset your password.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    startTransition(async () => {
+      const error = await sendPasswordReset(email);
+      if (error) {
+        toast({
+          title: 'Error',
+          description: error,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Password Reset Email Sent',
+          description: `If an account exists for ${email}, you will receive a password reset link.`,
+        });
+      }
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -59,7 +90,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
@@ -78,9 +109,26 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                   <div className="flex items-center justify-between">
+                    <FormLabel>Password</FormLabel>
+                    <button type="button" onClick={handlePasswordReset} className="text-sm font-medium text-primary hover:underline focus:outline-none">
+                        Forgot Password?
+                    </button>
+                  </div>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
+                    <div className="relative">
+                        <Input type={showPassword ? 'text' : 'password'} placeholder="••••••••" {...field} />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute inset-y-0 right-0 h-full px-3"
+                            onClick={() => setShowPassword(prev => !prev)}
+                        >
+                            {showPassword ? <EyeOff /> : <Eye />}
+                            <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                        </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
