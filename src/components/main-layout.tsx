@@ -31,15 +31,16 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                     <SidebarMenu>
                         {navItems.map((item) => (
                             <SidebarMenuItem key={item.label}>
-                                <Link href={item.href} legacyBehavior passHref>
-                                    <SidebarMenuButton
-                                        isActive={pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')}
-                                        tooltip={{children: item.label, side:"right", align:"center"}}
-                                    >
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')}
+                                    tooltip={{children: item.label, side:"right", align:"center"}}
+                                >
+                                    <Link href={item.href}>
                                         <item.icon />
                                         <span>{item.label}</span>
-                                    </SidebarMenuButton>
-                                </Link>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
                     </SidebarMenu>
