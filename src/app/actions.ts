@@ -4,7 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { z } from 'zod';
+import { z } from "zod";
 
 const SightingSchema = z.object({
   userId: z.string().min(1, { message: "User ID is required." }),

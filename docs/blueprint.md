@@ -4,7 +4,7 @@
 
 - Explore Birds: Display a list of known bird species.
 - Bird Details: Allow users to view bird details.
-- AI Bird Guesser: Generate suggested birds from the list in 'Explore Birds' based on a textual description provided by the user.
+- AI Bird Guesser: Generate suggested birds from the list in 'Explore Birds' based on a textual description provided by the user. The LLM will use a tool to incorporate bird facts into the result if they would be helpful.
 
 ## Style Guidelines:
 

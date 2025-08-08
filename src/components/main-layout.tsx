@@ -33,7 +33,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                             <SidebarMenuItem key={item.label}>
                                 <Link href={item.href} legacyBehavior passHref>
                                     <SidebarMenuButton
-                                        isActive={pathname === item.href}
+                                        isActive={pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')}
                                         tooltip={{children: item.label, side:"right", align:"center"}}
                                     >
                                         <item.icon />
