@@ -10,6 +10,7 @@ const SightingFormSchema = z.object({
   birdId: z.string({ required_error: 'Please select a bird.' }).min(1, 'Please select a bird.'),
   dateSeen: z.date({ required_error: 'Please select a date.' }),
   notes: z.string().max(500, 'Notes must be 500 characters or less.').optional(),
+  photoUrl: z.string().optional(),
 });
 
 export type SightingFormState = {
@@ -18,6 +19,7 @@ export type SightingFormState = {
     birdId?: string[];
     dateSeen?: string[];
     notes?: string[];
+    photoUrl?: string[];
   };
   success: boolean;
 };
@@ -27,6 +29,7 @@ export async function addSighting(prevState: SightingFormState, formData: FormDa
     birdId: formData.get('birdId'),
     dateSeen: new Date(formData.get('dateSeen') as string),
     notes: formData.get('notes'),
+    photoUrl: formData.get('photoUrl'),
   });
 
   if (!validatedFields.success) {
@@ -37,7 +40,7 @@ export async function addSighting(prevState: SightingFormState, formData: FormDa
     };
   }
   
-  const { birdId, dateSeen, notes } = validatedFields.data;
+  const { birdId, dateSeen, notes, photoUrl } = validatedFields.data;
   const userId = formData.get('userId') as string;
   const birdName = formData.get('birdName') as string;
   
@@ -53,7 +56,7 @@ export async function addSighting(prevState: SightingFormState, formData: FormDa
       birdName,
       dateSeen: Timestamp.fromDate(dateSeen),
       notes: notes || '',
-      photoUrl: '', // Optional photo URL not implemented in form
+      photoUrl: photoUrl || '',
     });
     
     revalidatePath('/');
@@ -70,6 +73,7 @@ export async function updateSighting(sightingId: string, prevState: SightingForm
     birdId: formData.get('birdId'),
     dateSeen: new Date(formData.get('dateSeen') as string),
     notes: formData.get('notes'),
+    photoUrl: formData.get('photoUrl'),
   });
 
   if (!validatedFields.success) {
@@ -80,7 +84,7 @@ export async function updateSighting(sightingId: string, prevState: SightingForm
     };
   }
   
-  const { birdId, dateSeen, notes } = validatedFields.data;
+  const { birdId, dateSeen, notes, photoUrl } = validatedFields.data;
   const userId = formData.get('userId') as string;
   const birdName = formData.get('birdName') as string;
 
@@ -95,6 +99,7 @@ export async function updateSighting(sightingId: string, prevState: SightingForm
       birdName,
       dateSeen: Timestamp.fromDate(dateSeen),
       notes: notes || '',
+      photoUrl: photoUrl || '',
     });
     
     revalidatePath('/');

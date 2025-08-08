@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useTransition } from 'react';
+import { useTransition, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +20,7 @@ import type { Bird, Sighting } from '@/types';
 import { cn } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
 import React from 'react';
+import Image from 'next/image';
 
 const SightingFormSchema = z.object({
   birdId: z.string({ required_error: 'Please select a bird.' }).min(1, 'Please select a bird.'),
@@ -41,6 +42,8 @@ interface SightingFormProps {
 export function SightingForm({ birds, userId, type, sighting, onSuccess }: SightingFormProps) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [preview, setPreview] = useState<string | null>(sighting?.photoUrl || null);
+  const photoRef = React.useRef<HTMLInputElement>(null);
 
   const form = useForm<SightingFormData>({
     resolver: zodResolver(SightingFormSchema),
@@ -50,6 +53,19 @@ export function SightingForm({ birds, userId, type, sighting, onSuccess }: Sight
         notes: type === 'edit' && sighting ? sighting.notes : '',
     }
   });
+
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreview(null);
+    }
+  };
 
   const onSubmit = (data: SightingFormData) => {
     startTransition(async () => {
@@ -70,9 +86,14 @@ export function SightingForm({ birds, userId, type, sighting, onSuccess }: Sight
         formData.append('dateSeen', data.dateSeen.toISOString());
         formData.append('notes', data.notes || '');
 
-        if (data.photo && data.photo[0]) {
-            formData.append('photo', data.photo[0]);
+        // NOTE: The backend action does not yet support file uploads.
+        // This is included for UI demonstration purposes.
+        if (preview && preview.startsWith('data:')) {
+            formData.append('photoUrl', preview);
+        } else if (sighting?.photoUrl) {
+            formData.append('photoUrl', sighting.photoUrl);
         }
+
 
         const action = type === 'add' 
             ? addSighting
@@ -88,6 +109,7 @@ export function SightingForm({ birds, userId, type, sighting, onSuccess }: Sight
             onSuccess();
             if (type === 'add') {
                 form.reset({birdId: undefined, dateSeen: new Date(), notes: ''});
+                setPreview(null);
             }
         } else {
              toast({
@@ -175,20 +197,21 @@ export function SightingForm({ birds, userId, type, sighting, onSuccess }: Sight
                 render={({ field }) => (
                     <FormItem>
                         <FormLabel>Photo (Optional)</FormLabel>
+                        {preview && (
+                            <div className="relative w-full aspect-video rounded-md overflow-hidden">
+                                <Image src={preview} alt="Sighting preview" layout="fill" className="object-cover" />
+                            </div>
+                        )}
                          <FormControl>
-                            <div className="flex items-center gap-2">
-                            <ImageIcon className="h-5 w-5 text-muted-foreground" />
                             <Input 
                                 type="file" 
                                 accept="image/*" 
-                                {...form.register("photo")} 
-                                disabled={true}
-                                className="cursor-not-allowed"
+                                ref={photoRef}
+                                onChange={handlePhotoChange}
                             />
-                            </div>
                         </FormControl>
                          <p className="text-xs text-muted-foreground mt-1">
-                            Photo uploads are coming soon!
+                            Note: Photo uploads are for demonstration and are not saved permanently.
                         </p>
                         <FormMessage />
                     </FormItem>
