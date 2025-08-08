@@ -7,15 +7,21 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { AuthButton } from './auth-button';
+import { useAuth } from '@/hooks/use-auth';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { user } = useAuth();
 
     const navItems = [
         { href: '/', icon: Home, label: 'My Sightings' },
         { href: '/explore', icon: Compass, label: 'Explore Birds' },
         { href: '/ai-guesser', icon: BrainCircuit, label: 'AI Guesser' },
     ];
+
+    if (!user) {
+        return <main>{children}</main>;
+    }
 
     return (
         <SidebarProvider>

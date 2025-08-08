@@ -1,16 +1,12 @@
 
 "use client";
 
-import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
 import { Feather } from "lucide-react";
 import { AuthButton } from "./auth-button";
 
 export function WelcomePage() {
-    const { loading } = useAuth();
-
     return (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] text-center p-4">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 bg-background">
             <div className="max-w-md w-full space-y-8">
                 <div className="flex flex-col items-center gap-4">
                     <Feather className="w-20 h-20 text-primary" />
