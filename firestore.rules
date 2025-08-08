@@ -1,17 +1,23 @@
 
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Users can create their own user document, and update their last login time.
+    // They can only read their own document.
     match /users/{userId} {
-      // Allow users to create their own user document
+      allow read, update: if request.auth != null && request.auth.uid == userId;
       allow create: if request.auth != null;
-      // Allow users to read their own document
-      allow get: if request.auth != null && request.auth.uid == userId;
+    }
 
-      // Allow users to read and write their own sightings
-      match /sightings/{sightingId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
+    // Users can create, read, and update sightings that belong to them.
+    match /users/{userId}/sightings/{sightingId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // The bird list is public and read-only for all users.
+    match /birds/{birdId} {
+        allow read: if true;
     }
   }
 }
