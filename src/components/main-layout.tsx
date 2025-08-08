@@ -50,7 +50,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                     <div className="group-data-[collapsible=icon]:hidden">
                        <AuthButton />
                     </div>
-                </SidebarFooter>
+                 </SidebarFooter>
             </Sidebar>
             <SidebarInset>
                 <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 backdrop-blur-sm px-4 md:hidden">
