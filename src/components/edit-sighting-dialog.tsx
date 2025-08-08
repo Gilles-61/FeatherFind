@@ -11,33 +11,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import type { Bird } from '@/types';
-import { PlusCircle } from 'lucide-react';
+import type { Bird, Sighting } from '@/types';
+import { Edit } from 'lucide-react';
 import React from 'react';
 import { SightingForm } from './sighting-form';
 
-export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: string }) {
+export function EditSightingDialog({ birds, userId, sighting }: { birds: Bird[], userId: string, sighting: Sighting }) {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Sighting
+        <Button variant="ghost" size="icon" className="h-8 w-8 text-primary/80 hover:text-primary hover:bg-primary/10">
+            <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle className="font-headline text-2xl">Log a New Sighting</DialogTitle>
+          <DialogTitle className="font-headline text-2xl">Edit Sighting</DialogTitle>
           <DialogDescription>
-            Record a new bird you've spotted. Fill in the details below.
+            Update the details of your bird sighting.
           </DialogDescription>
         </DialogHeader>
         <SightingForm 
             birds={birds} 
             userId={userId} 
-            type="add"
+            type="edit"
+            sighting={sighting}
             onSuccess={() => setOpen(false)}
         />
       </DialogContent>

@@ -3,12 +3,11 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import { getUserSightings } from "@/lib/data";
-import type { Sighting } from "@/types";
+import type { Sighting, Bird } from "@/types";
 import { useEffect, useState } from "react";
 import { SightingCard } from "@/components/sighting-card";
 import { AddSightingDialog } from "@/components/add-sighting-dialog";
 import { getBirds } from "@/lib/data";
-import type { Bird } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -69,7 +68,7 @@ export function MySightingsPage() {
       ) : sightings.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {sightings.map((sighting) => (
-            <SightingCard key={sighting.id} sighting={sighting} />
+            <SightingCard key={sighting.id} sighting={sighting} birds={birds} userId={user.uid} />
           ))}
         </div>
       ) : (
