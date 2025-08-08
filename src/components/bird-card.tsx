@@ -7,7 +7,7 @@ export function BirdCard({ bird }: { bird: Bird }) {
   const aiHint = bird.name.toLowerCase();
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col group">
-      <div className="aspect-video relative overflow-hidden">
+      <div className="aspect-video relative">
         <Image
           src={bird.imageUrl}
           alt={bird.name}
@@ -17,7 +17,7 @@ export function BirdCard({ bird }: { bird: Bird }) {
         />
       </div>
       <CardContent className="p-4 flex-grow bg-card">
-        <h3 className="text-lg font-headline font-semibold">{bird.name}</h3>
+        <h3 className="text-lg font-headline font-semibold text-center">{bird.name}</h3>
       </CardContent>
     </Card>
   );
