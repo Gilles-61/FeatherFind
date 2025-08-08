@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Home, Compass, BrainCircuit, Feather, Camera } from 'lucide-react';
+import { Home, Compass, BrainCircuit, Feather, Camera, Languages } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthButton } from './auth-button';
 import { useAuth } from '@/hooks/use-auth';
 import { getDictionary } from '@/lib/i18n';
+import { LanguageSwitcher } from './language-switcher';
 
 // Defaulting to 'en', a language switcher would be needed for dynamic language changes.
 const lang = 'en';
@@ -71,9 +72,14 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                     </SidebarMenu>
                 </SidebarContent>
                  <SidebarFooter>
-                    <div className="group-data-[collapsible=icon]:hidden">
+                    <div className="group-data-[collapsible=icon]:hidden flex flex-col gap-2">
+                       <LanguageSwitcher />
                        <AuthButton dictionary={dictionary.authButton} />
                     </div>
+                     <div className="hidden group-data-[collapsible=icon]:flex flex-col gap-2">
+                         <LanguageSwitcher />
+                         <AuthButton dictionary={dictionary.authButton} />
+                     </div>
                  </SidebarFooter>
             </Sidebar>
             <SidebarInset>
