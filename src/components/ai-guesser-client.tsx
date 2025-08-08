@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BirdCard } from "@/components/bird-card";
 import { Loader2, AlertCircle, Sparkles } from "lucide-react";
 import React from "react";
+import { useLanguage } from "@/hooks/use-language";
 
 const initialState: GuesserState = {};
 
@@ -34,11 +35,13 @@ function SubmitButton({ dictionary }: { dictionary: any }) {
 }
 
 export function AIGuesserClient({ dictionary }: { dictionary: any }) {
+  const { locale } = useLanguage();
   const [state, formAction] = useActionState(getAiBirdSuggestions, initialState);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <form action={formAction} className="space-y-4">
+        <input type="hidden" name="locale" value={locale} />
         <Textarea
           name="description"
           placeholder={dictionary.placeholder}

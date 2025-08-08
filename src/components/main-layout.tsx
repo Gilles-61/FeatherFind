@@ -1,34 +1,23 @@
 
 "use client";
 
-import { Home, Compass, BrainCircuit, Feather, Camera, Languages } from 'lucide-react';
+import { Home, Compass, BrainCircuit, Feather, Camera } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { AuthButton } from './auth-button';
 import { useAuth } from '@/hooks/use-auth';
-import { getDictionary } from '@/lib/i18n';
+import { useLanguage } from '@/hooks/use-language';
 import { LanguageSwitcher } from './language-switcher';
-
-// Defaulting to 'en', a language switcher would be needed for dynamic language changes.
-const lang = 'en';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const { user, loading } = useAuth();
-    const [dictionary, setDictionary] = useState<any>(null);
-
-    useEffect(() => {
-        const fetchDictionary = async () => {
-            const dict = await getDictionary(lang);
-            setDictionary(dict.mainLayout);
-        };
-        fetchDictionary();
-    }, []);
+    const { dictionary } = useLanguage();
 
     if (loading || (user && !dictionary)) {
-        return null;
+        return null; // Or a loading skeleton
     }
 
     if (!user) {
@@ -36,10 +25,10 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     }
     
     const navItems = [
-        { href: '/', icon: Home, label: dictionary.nav.mySightings },
-        { href: '/explore', icon: Compass, label: dictionary.nav.exploreBirds },
-        { href: '/ai-guesser', icon: BrainCircuit, label: dictionary.nav.aiTextGuesser },
-        { href: '/ai-photo-guesser', icon: Camera, label: dictionary.nav.aiPhotoGuesser },
+        { href: '/', icon: Home, label: dictionary.mainLayout.nav.mySightings },
+        { href: '/explore', icon: Compass, label: dictionary.mainLayout.nav.exploreBirds },
+        { href: '/ai-guesser', icon: BrainCircuit, label: dictionary.mainLayout.nav.aiTextGuesser },
+        { href: '/ai-photo-guesser', icon: Camera, label: dictionary.mainLayout.nav.aiPhotoGuesser },
     ];
 
     return (
@@ -74,11 +63,11 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                  <SidebarFooter>
                     <div className="group-data-[collapsible=icon]:hidden flex flex-col gap-2">
                        <LanguageSwitcher />
-                       <AuthButton dictionary={dictionary.authButton} />
+                       <AuthButton dictionary={dictionary.mainLayout.authButton} />
                     </div>
                      <div className="hidden group-data-[collapsible=icon]:flex flex-col gap-2">
                          <LanguageSwitcher />
-                         <AuthButton dictionary={dictionary.authButton} />
+                         <AuthButton dictionary={dictionary.mainLayout.authButton} />
                      </div>
                  </SidebarFooter>
             </Sidebar>
@@ -92,7 +81,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                         </Link>
                     </div>
                      <div className="md:hidden">
-                        <AuthButton dictionary={dictionary.authButton} />
+                        <AuthButton dictionary={dictionary.mainLayout.authButton} />
                     </div>
                 </header>
                 <main className="p-4 sm:p-6 lg:p-8">

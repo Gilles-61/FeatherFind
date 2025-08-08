@@ -9,26 +9,21 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Languages } from "lucide-react"
+import { useLanguage } from "@/hooks/use-language"
+import type { Locale } from "@/lib/i18n"
 
 export function LanguageSwitcher() {
-  // This is a placeholder component. In a real app, you'd use a library
-  // like 'next-intl' or 'react-i18next' and have this component change
-  // the application's locale, which would likely trigger a page reload
-  // or a re-render with the new language.
+  const { locale, setLocale } = useLanguage();
 
-  // For now, it's a visual placeholder.
   const handleLanguageChange = (value: string) => {
-    // In a real implementation:
-    // const { pathname, asPath, query } = router;
-    // router.push({ pathname, query }, asPath, { locale: value });
-    console.log("Language selected:", value);
+    setLocale(value as Locale);
   };
   
   return (
     <div className="flex items-center gap-2 p-2 rounded-md hover:bg-sidebar-accent">
        <Languages className="h-5 w-5 text-sidebar-foreground" />
        <div className="group-data-[collapsible=icon]:hidden">
-        <Select defaultValue="en" onValueChange={handleLanguageChange}>
+        <Select value={locale} onValueChange={handleLanguageChange}>
             <SelectTrigger className="w-[180px] h-9 border-0 bg-transparent focus:ring-0 focus:ring-offset-0">
                 <SelectValue placeholder="Language" />
             </SelectTrigger>

@@ -1,11 +1,16 @@
+
+"use client";
+
 import { AIGuesserClient } from "@/components/ai-guesser-client";
-import { getDictionary } from "@/lib/i18n";
+import { useLanguage } from "@/hooks/use-language";
 
-// Defaulting to 'en' for now
-const lang = 'en';
+export default function AIGuesserPage() {
+  const { dictionary } = useLanguage();
 
-export default async function AIGuesserPage() {
-  const dictionary = await getDictionary(lang);
+  if (!dictionary) {
+    return null; // Or loading skeleton
+  }
+
   const pageDictionary = dictionary.aiGuesserPage;
 
   return (

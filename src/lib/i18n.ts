@@ -4,8 +4,10 @@ const dictionaries = {
   fr: () => import('@/locales/fr.json').then((module) => module.default),
   es: () => import('@/locales/es.json').then((module) => module.default),
 }
+
+export type Locale = keyof typeof dictionaries;
  
-export const getDictionary = async (locale: 'en' | 'fr' | 'es') => {
+export const getDictionary = async (locale: Locale) => {
     const loader = dictionaries[locale] || dictionaries.en;
     return loader();
 }

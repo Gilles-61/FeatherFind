@@ -14,6 +14,7 @@ import Image from "next/image";
 import { Card } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/use-language";
 
 const initialState: GuesserState = {};
 
@@ -37,6 +38,7 @@ function SubmitButton({ disabled, dictionary }: { disabled: boolean, dictionary:
 }
 
 export function AIPhotoGuesserClient({ dictionary }: { dictionary: any }) {
+  const { locale } = useLanguage();
   const [state, formAction] = useActionState(getAiBirdSuggestionsFromPhoto, initialState);
   const [preview, setPreview] = useState<string | null>(null);
   const [photoData, setPhotoData] = useState<string | null>(null);
@@ -121,6 +123,7 @@ export function AIPhotoGuesserClient({ dictionary }: { dictionary: any }) {
     <div className="max-w-4xl mx-auto space-y-8">
       <form action={formAction} className="space-y-4">
         <input type="hidden" name="photo" value={photoData || ""} />
+        <input type="hidden" name="locale" value={locale} />
 
         <Tabs value={mode} onValueChange={(value) => setMode(value as any)} className="w-full">
             <TabsList className="grid w-full grid-cols-2">

@@ -1,12 +1,16 @@
 
+"use client";
+
 import { AIPhotoGuesserClient } from "@/components/ai-photo-guesser-client";
-import { getDictionary } from "@/lib/i18n";
+import { useLanguage } from "@/hooks/use-language";
 
-// Defaulting to 'en' for now
-const lang = 'en';
+export default function AIPhotoGuesserPage() {
+  const { dictionary } = useLanguage();
 
-export default async function AIPhotoGuesserPage() {
-  const dictionary = await getDictionary(lang);
+  if (!dictionary) {
+    return null; // Or a loading skeleton
+  }
+
   const pageDictionary = dictionary.aiPhotoGuesserPage;
 
   return (

@@ -4,23 +4,10 @@
 import { Feather } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { getDictionary } from "@/lib/i18n";
-import { useEffect, useState } from "react";
-
-// Since we are not implementing full routing-based i18n yet,
-// we will default to English for this component.
-const lang = 'en';
+import { useLanguage } from "@/hooks/use-language";
 
 export function WelcomePage() {
-    const [dictionary, setDictionary] = useState<any>(null);
-
-    useEffect(() => {
-        const fetchDictionary = async () => {
-            const dict = await getDictionary(lang);
-            setDictionary(dict);
-        };
-        fetchDictionary();
-    }, []);
+    const { dictionary } = useLanguage();
 
     if (!dictionary) {
         return null; // Or a loading skeleton

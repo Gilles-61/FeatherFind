@@ -5,17 +5,13 @@ import { guessBirdFromPhoto } from "@/ai/flows/guess-bird-from-photo";
 import { getBirds } from '@/lib/data';
 import type { Bird } from '@/types';
 import { z } from 'zod';
-import { getDictionary } from "@/lib/i18n";
+import { getDictionary, type Locale } from "@/lib/i18n";
 
-// Defaulting to 'en' for now
-const lang = 'en';
-
-
-const getFormSchema = async () => {
-    const dictionary = await getDictionary(lang);
+const getFormSchema = (dictionary: any) => {
     const errorMessages = dictionary.aiPhotoGuesserPage.errors;
     return z.object({
       photo: z.string().min(1, { message: errorMessages.photoRequired }),
+      locale: z.string(),
     });
 }
 
@@ -30,9 +26,13 @@ export async function getAiBirdSuggestionsFromPhoto(
   prevState: GuesserState,
   formData: FormData
 ): Promise<GuesserState> {
-  const FormSchema = await getFormSchema();
+  const locale = (formData.get("locale") as Locale) || 'en';
+  const dictionary = await getDictionary(locale);
+  const FormSchema = getFormSchema(dictionary);
+
   const validatedFields = FormSchema.safeParse({
     photo: formData.get("photo"),
+    locale: locale,
   });
 
   if (!validatedFields.success) {
@@ -42,14 +42,13 @@ export async function getAiBirdSuggestionsFromPhoto(
     };
   }
   
-  const dictionary = await getDictionary(lang);
   const errorMessages = dictionary.aiPhotoGuesserPage.errors;
 
   try {
     const suggestionsFromAi = await guessBirdFromPhoto({ photoDataUri: validatedFields.data.photo });
     
     if (!suggestionsFromAi || suggestionsFromAi.length === 0) {
-      return { error: errorMessages.noBirdsFound };
+      return { message: errorMessages.noBirdsFound };
     }
 
     const allBirds = await getBirds();
@@ -74,6 +73,6 @@ export async function getAiBirdSuggestionsFromPhoto(
 
   } catch (e) {
     console.error(e);
-    return { error: errorMessages.unavailable };
+    return { message: errorMessages.unavailable };
   }
 }

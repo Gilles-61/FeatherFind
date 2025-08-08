@@ -1,14 +1,28 @@
 
+"use client";
+
 import { getBirds } from "@/lib/data";
 import { ClientSearch } from "@/components/client-search";
-import { getDictionary } from "@/lib/i18n";
+import { useLanguage } from "@/hooks/use-language";
+import { useEffect, useState } from "react";
+import type { Bird } from "@/types";
 
-// Defaulting to 'en' for now
-const lang = 'en';
+export default function ExplorePage() {
+  const [birds, setBirds] = useState<Bird[]>([]);
+  const { dictionary } = useLanguage();
 
-export default async function ExplorePage() {
-  const birds = await getBirds();
-  const dictionary = await getDictionary(lang);
+  useEffect(() => {
+    async function fetchBirds() {
+      const allBirds = await getBirds();
+      setBirds(allBirds);
+    }
+    fetchBirds();
+  }, []);
+
+  if (!dictionary) {
+    return null; // Or a loading skeleton
+  }
+  
   const pageDictionary = dictionary.explorePage;
 
   return (

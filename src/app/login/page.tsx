@@ -8,23 +8,11 @@ import { LoginForm } from '@/components/login-form';
 import { SignupForm } from '@/components/signup-form';
 import { useAuth } from '@/hooks/use-auth';
 import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { getDictionary } from '@/lib/i18n';
-
-// Defaulting to 'en', a language switcher would be needed for dynamic language changes.
-const lang = 'en';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function LoginPage() {
   const { user, loading } = useAuth();
-  const [dictionary, setDictionary] = useState<any>(null);
-
-   useEffect(() => {
-    const fetchDictionary = async () => {
-      const dict = await getDictionary(lang);
-      setDictionary(dict.loginPage);
-    };
-    fetchDictionary();
-  }, []);
+  const { dictionary } = useLanguage();
 
   if (loading || !dictionary) {
     return null; // Or a loading spinner
@@ -34,6 +22,8 @@ export default function LoginPage() {
     redirect('/');
   }
 
+  const pageDictionary = dictionary.loginPage;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-background">
       <div className="max-w-md w-full space-y-8">
@@ -41,24 +31,24 @@ export default function LoginPage() {
           <Feather className="w-20 h-20 text-primary" />
           <h1 className="text-5xl font-headline font-bold text-primary">FeatherFind</h1>
           <p className="text-xl text-center text-muted-foreground">
-            {dictionary.subtitle}
+            {pageDictionary.subtitle}
           </p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">{dictionary.signIn}</TabsTrigger>
-            <TabsTrigger value="signup">{dictionary.createAccount}</TabsTrigger>
+            <TabsTrigger value="signin">{pageDictionary.signIn}</TabsTrigger>
+            <TabsTrigger value="signup">{pageDictionary.createAccount}</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-            <LoginForm dictionary={dictionary.loginForm} />
+            <LoginForm dictionary={pageDictionary.loginForm} />
             <div className="relative mt-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  {dictionary.orContinueWith}
+                  {pageDictionary.orContinueWith}
                 </span>
               </div>
             </div>
@@ -67,7 +57,7 @@ export default function LoginPage() {
             </div>
           </TabsContent>
           <TabsContent value="signup">
-            <SignupForm dictionary={dictionary.signupForm} />
+            <SignupForm dictionary={pageDictionary.signupForm} />
           </TabsContent>
         </Tabs>
       </div>
