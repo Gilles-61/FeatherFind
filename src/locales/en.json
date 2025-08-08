@@ -59,5 +59,19 @@
         "subtitle": "Discover the variety of birds in our database.",
         "searchPlaceholder": "Search for a bird...",
         "noResults": "No birds found matching your search."
+    },
+    "aiGuesserPage": {
+        "title": "AI Text Guesser",
+        "subtitle": "Describe a bird you've seen, and our AI will try to identify it for you.",
+        "placeholder": "e.g., 'A small bird with a bright red breast and a black head, often seen in winter.'",
+        "buttonIdle": "Guess the Bird",
+        "buttonPending": "Identifying...",
+        "errorTitle": "Error",
+        "suggestionsTitle": "AI Suggestions",
+        "errors": {
+            "descriptionTooShort": "Please provide a more detailed description.",
+            "noBirdsFound": "Could not identify any birds from your description. Please try describing it differently.",
+            "unavailable": "The AI guesser is currently unavailable. Please try again later."
+        }
     }
 }

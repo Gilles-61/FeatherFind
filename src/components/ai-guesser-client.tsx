@@ -14,26 +14,26 @@ import React from "react";
 
 const initialState: GuesserState = {};
 
-function SubmitButton() {
+function SubmitButton({ dictionary }: { dictionary: any }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending} className="w-full sm:w-auto">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Identifying...
+          {dictionary.buttonPending}
         </>
       ) : (
         <>
           <Sparkles className="mr-2 h-4 w-4" />
-          Guess the Bird
+          {dictionary.buttonIdle}
         </>
       )}
     </Button>
   );
 }
 
-export function AIGuesserClient() {
+export function AIGuesserClient({ dictionary }: { dictionary: any }) {
   const [state, formAction] = useActionState(getAiBirdSuggestions, initialState);
 
   return (
@@ -41,7 +41,7 @@ export function AIGuesserClient() {
       <form action={formAction} className="space-y-4">
         <Textarea
           name="description"
-          placeholder="e.g., 'A small bird with a bright red breast and a black head, often seen in winter.'"
+          placeholder={dictionary.placeholder}
           rows={5}
           className="text-base"
           required
@@ -49,21 +49,21 @@ export function AIGuesserClient() {
         />
         {state?.message && <p className="text-sm font-medium text-destructive">{state.message}</p>}
         <div className="text-center">
-          <SubmitButton />
+          <SubmitButton dictionary={dictionary} />
         </div>
       </form>
 
       {state?.error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
+          <AlertTitle>{dictionary.errorTitle}</AlertTitle>
           <AlertDescription>{state.error}</AlertDescription>
         </Alert>
       )}
 
       {state?.suggestions && (
         <div className="space-y-6">
-          <h2 className="text-3xl font-headline text-center text-primary">AI Suggestions</h2>
+          <h2 className="text-3xl font-headline text-center text-primary">{dictionary.suggestionsTitle}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {state.suggestions.map((bird) => (
               <Link href={`/explore/${bird.id}`} key={bird.id} className="block">

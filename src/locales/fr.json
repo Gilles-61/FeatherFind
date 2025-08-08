@@ -59,5 +59,19 @@
         "subtitle": "Découvrez la variété d'oiseaux dans notre base de données.",
         "searchPlaceholder": "Rechercher un oiseau...",
         "noResults": "Aucun oiseau trouvé correspondant à votre recherche."
+    },
+    "aiGuesserPage": {
+        "title": "Devin IA par Texte",
+        "subtitle": "Décrivez un oiseau que vous avez vu, et notre IA essaiera de l'identifier pour vous.",
+        "placeholder": "par ex., 'Un petit oiseau avec une poitrine rouge vif et une tête noire, souvent vu en hiver.'",
+        "buttonIdle": "Deviner l'Oiseau",
+        "buttonPending": "Identification...",
+        "errorTitle": "Erreur",
+        "suggestionsTitle": "Suggestions de l'IA",
+        "errors": {
+            "descriptionTooShort": "Veuillez fournir une description plus détaillée.",
+            "noBirdsFound": "Impossible d'identifier des oiseaux à partir de votre description. Veuillez essayer de le décrire différemment.",
+            "unavailable": "Le devin IA est actuellement indisponible. Veuillez réessayer plus tard."
+        }
     }
 }

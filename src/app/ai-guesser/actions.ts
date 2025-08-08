@@ -5,10 +5,18 @@ import { guessBirdFromDescription } from "@/ai/flows/guess-bird-from-description
 import { getBirds } from '@/lib/data';
 import type { Bird } from '@/types';
 import { z } from 'zod';
+import { getDictionary } from "@/lib/i18n";
 
-const FormSchema = z.object({
-  description: z.string().min(10, { message: "Please provide a more detailed description." }),
-});
+// Defaulting to 'en' for now
+const lang = 'en';
+
+const getFormSchema = async () => {
+  const dictionary = await getDictionary(lang);
+  const errorMessages = dictionary.aiGuesserPage.errors;
+  return z.object({
+    description: z.string().min(10, { message: errorMessages.descriptionTooShort }),
+  });
+}
 
 export type GuesserState = {
   suggestions?: Bird[];
@@ -20,22 +28,26 @@ export async function getAiBirdSuggestions(
   prevState: GuesserState,
   formData: FormData
 ): Promise<GuesserState> {
+  const FormSchema = await getFormSchema();
   const validatedFields = FormSchema.safeParse({
     description: formData.get("description"),
   });
 
   if (!validatedFields.success) {
     return {
-      error: "Invalid description.",
+      error: "Invalid description.", // This is a key, not displayed text
       message: validatedFields.error.flatten().fieldErrors.description?.join(", "),
     };
   }
+
+  const dictionary = await getDictionary(lang);
+  const errorMessages = dictionary.aiGuesserPage.errors;
 
   try {
     const suggestionsFromAi = await guessBirdFromDescription({ description: validatedFields.data.description });
     
     if (!suggestionsFromAi || suggestionsFromAi.length === 0) {
-      return { error: "Could not identify any birds from your description. Please try describing it differently." };
+      return { error: errorMessages.noBirdsFound };
     }
 
     const allBirds = await getBirds();
@@ -60,6 +72,6 @@ export async function getAiBirdSuggestions(
 
   } catch (e) {
     console.error(e);
-    return { error: "The AI guesser is currently unavailable. Please try again later." };
+    return { error: errorMessages.unavailable };
   }
 }

@@ -59,5 +59,19 @@
         "subtitle": "Descubre la variedad de aves en nuestra base de datos.",
         "searchPlaceholder": "Buscar un pájaro...",
         "noResults": "No se encontraron aves que coincidan con tu búsqueda."
+    },
+    "aiGuesserPage": {
+        "title": "Adivinador IA de Texto",
+        "subtitle": "Describe un pájaro que has visto y nuestra IA intentará identificarlo.",
+        "placeholder": "p. ej., 'Un pájaro pequeño con el pecho rojo brillante y la cabeza negra, visto a menudo en invierno.'",
+        "buttonIdle": "Adivinar el Pájaro",
+        "buttonPending": "Identificando...",
+        "errorTitle": "Error",
+        "suggestionsTitle": "Sugerencias de la IA",
+        "errors": {
+            "descriptionTooShort": "Por favor, proporciona una descripción más detallada.",
+            "noBirdsFound": "No se pudo identificar ningún pájaro a partir de tu descripción. Por favor, intenta describirlo de otra manera.",
+            "unavailable": "El adivinador de IA no está disponible en este momento. Por favor, inténtalo de nuevo más tarde."
+        }
     }
 }
