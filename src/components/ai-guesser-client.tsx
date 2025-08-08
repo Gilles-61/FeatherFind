@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useActionState, useFormStatus } from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { getAiBirdSuggestions, type GuesserState } from "@/app/ai-guesser/actions";
 import { Textarea } from "@/components/ui/textarea";
