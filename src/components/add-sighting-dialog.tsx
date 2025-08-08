@@ -30,7 +30,7 @@ import { useToast } from "@/hooks/use-toast";
 import React from 'react';
 
 const SightingFormSchema = z.object({
-  birdName: z.string({ required_error: 'Please select a bird.' }).min(1, 'Please select a bird.'),
+  birdId: z.string({ required_error: 'Please select a bird.' }).min(1, 'Please select a bird.'),
   dateSeen: z.date({ required_error: 'Please select a date.' }),
   notes: z.string().max(500, 'Notes must be 500 characters or less.').optional(),
 });
@@ -52,9 +52,20 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
 
   const onSubmit = (data: SightingFormData) => {
     startTransition(async () => {
+        const selectedBird = birds.find(b => b.id === data.birdId);
+        if (!selectedBird) {
+             toast({
+                title: "Error",
+                description: "Invalid bird selected.",
+                variant: 'destructive',
+            });
+            return;
+        }
+
         const formData = new FormData();
         formData.append('userId', userId);
-        formData.append('birdName', data.birdName);
+        formData.append('birdId', data.birdId);
+        formData.append('birdName', selectedBird.name);
         formData.append('dateSeen', data.dateSeen.toISOString());
         formData.append('notes', data.notes || '');
 
@@ -66,7 +77,7 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
                 description: result.message,
             });
             setOpen(false);
-            form.reset({dateSeen: new Date(), notes: ''});
+            form.reset({birdId: undefined, dateSeen: new Date(), notes: ''});
         } else {
              toast({
                 title: "Error",
@@ -96,7 +107,7 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
                 <FormField
                     control={form.control}
-                    name="birdName"
+                    name="birdId"
                     render={({ field }) => (
                         <FormItem>
                         <FormLabel>Bird</FormLabel>
@@ -108,7 +119,7 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
                             </FormControl>
                             <SelectContent>
                             {birds.map(bird => (
-                                <SelectItem key={bird.id} value={bird.name}>
+                                <SelectItem key={bird.id} value={bird.id}>
                                     {bird.name}
                                 </SelectItem>
                             ))}

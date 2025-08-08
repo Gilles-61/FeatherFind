@@ -8,6 +8,7 @@ import { z } from "zod";
 
 const SightingSchema = z.object({
   userId: z.string().min(1, { message: "User ID is required." }),
+  birdId: z.string().min(1, { message: "Bird is required." }),
   birdName: z.string().min(1, { message: "Bird name is required." }),
   dateSeen: z.date({ required_error: "Date is required." }),
   notes: z.string().optional(),
@@ -17,6 +18,7 @@ export type SightingFormState = {
   message: string;
   errors?: {
     userId?: string[];
+    birdId?: string[];
     birdName?: string[];
     dateSeen?: string[];
     notes?: string[];
@@ -27,6 +29,7 @@ export type SightingFormState = {
 export async function addSighting(prevState: SightingFormState, formData: FormData): Promise<SightingFormState> {
   const validatedFields = SightingSchema.safeParse({
     userId: formData.get('userId'),
+    birdId: formData.get('birdId'),
     birdName: formData.get('birdName'),
     dateSeen: new Date(formData.get('dateSeen') as string),
     notes: formData.get('notes'),
@@ -40,11 +43,12 @@ export async function addSighting(prevState: SightingFormState, formData: FormDa
     };
   }
   
-  const { userId, birdName, dateSeen, notes } = validatedFields.data;
+  const { userId, birdId, birdName, dateSeen, notes } = validatedFields.data;
 
   try {
     const sightingsRef = collection(db, `users/${userId}/sightings`);
     await addDoc(sightingsRef, {
+      birdId,
       birdName,
       dateSeen: Timestamp.fromDate(dateSeen),
       notes: notes || '',

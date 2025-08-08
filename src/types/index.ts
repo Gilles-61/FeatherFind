@@ -10,6 +10,7 @@ export interface Bird {
 
 export interface Sighting {
   id: string;
+  birdId: string;
   birdName: string;
   dateSeen: Timestamp | Date;
   notes: string;
