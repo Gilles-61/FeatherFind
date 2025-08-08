@@ -44,5 +44,14 @@
             "profile": "Perfil",
             "logout": "Cerrar Sesión"
         }
+    },
+    "mySightingsPage": {
+        "title": "Mis Avistamientos",
+        "subtitle": "Un registro de todas las aves que has avistado.",
+        "addSighting": "Añadir Avistamiento",
+        "noSightings": "Aún no hay avistamientos",
+        "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento, explora especies de aves o pide ayuda a nuestra IA.",
+        "exploreBirds": "Explorar Aves",
+        "useAiGuesser": "Usar Adivinador IA"
     }
 }

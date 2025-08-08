@@ -44,5 +44,14 @@
             "profile": "Profile",
             "logout": "Log out"
         }
+    },
+    "mySightingsPage": {
+        "title": "My Sightings",
+        "subtitle": "A log of all the birds you've spotted.",
+        "addSighting": "Add Sighting",
+        "noSightings": "No Sightings Yet",
+        "noSightingsDescription": "It looks like your birdwatching journal is empty. Add your first sighting, explore bird species, or get help from our AI.",
+        "exploreBirds": "Explore Birds",
+        "useAiGuesser": "Use AI Guesser"
     }
 }

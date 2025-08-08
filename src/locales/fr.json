@@ -44,5 +44,14 @@
             "profile": "Profil",
             "logout": "Se déconnecter"
         }
+    },
+    "mySightingsPage": {
+        "title": "Mes Observations",
+        "subtitle": "Un journal de tous les oiseaux que vous avez observés.",
+        "addSighting": "Ajouter une observation",
+        "noSightings": "Aucune observation pour l'instant",
+        "noSightingsDescription": "Il semble que votre journal d'observation d'oiseaux soit vide. Ajoutez votre première observation, explorez des espèces d'oiseaux ou demandez de l'aide à notre IA.",
+        "exploreBirds": "Explorer les Oiseaux",
+        "useAiGuesser": "Utiliser le Devin IA"
     }
 }
