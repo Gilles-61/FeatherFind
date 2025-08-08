@@ -10,6 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import { getBirds } from '@/lib/data';
 import {z} from 'genkit';
 
 const GuessBirdFromDescriptionInputSchema = z.object({
@@ -32,16 +33,19 @@ export async function guessBirdFromDescription(input: GuessBirdFromDescriptionIn
 
 const getBirdFacts = ai.defineTool({
   name: 'getBirdFacts',
-  description: 'Retrieves facts about a specific bird species.',
+  description: 'Retrieves facts or a detailed description about a specific bird species.',
   inputSchema: z.object({
     birdName: z.string().describe('The common name of the bird.'),
   }),
-  outputSchema: z.string().describe('Interesting facts about the bird.'),
+  outputSchema: z.string().describe('Interesting facts or a detailed description of the bird.'),
 },
 async (input) => {
-    // Placeholder implementation: Replace with actual data retrieval.
-    // In a real application, this would fetch bird facts from a database or external API.
-    return `Interesting facts about ${input.birdName}: This bird is known for its unique song and colorful plumage.`;
+    const allBirds = await getBirds();
+    const bird = allBirds.find(b => b.name.toLowerCase() === input.birdName.toLowerCase());
+    if (bird) {
+      return bird.description;
+    }
+    return `No specific facts found for ${input.birdName}. It is a known bird species.`;
   }
 );
 

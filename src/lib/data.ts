@@ -4,6 +4,7 @@ import type { Bird, Sighting, PaginatedSightings } from '@/types';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit, startAfter, type DocumentSnapshot, type DocumentData } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
+
 // --- Bird Data ---
 // Uses local data for immediate use without DB setup.
 // Includes commented-out Firestore implementation.
