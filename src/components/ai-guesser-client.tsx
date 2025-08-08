@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react";
 import Link from "next/link";
 import { getAiBirdSuggestions, type GuesserState } from "@/app/ai-guesser/actions";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,7 +33,7 @@ function SubmitButton() {
 }
 
 export function AIGuesserClient() {
-  const [state, formAction] = useFormState(getAiBirdSuggestions, initialState);
+  const [state, formAction] = useActionState(getAiBirdSuggestions, initialState);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
