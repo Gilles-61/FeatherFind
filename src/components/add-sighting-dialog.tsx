@@ -17,12 +17,13 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { CalendarIcon, Loader2, PlusCircle } from 'lucide-react';
+import { CalendarIcon, Loader2, PlusCircle, Image as ImageIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import type { Bird } from '@/types';
 import { cn } from '@/lib/utils';
@@ -33,6 +34,7 @@ const SightingFormSchema = z.object({
   birdId: z.string({ required_error: 'Please select a bird.' }).min(1, 'Please select a bird.'),
   dateSeen: z.date({ required_error: 'Please select a date.' }),
   notes: z.string().max(500, 'Notes must be 500 characters or less.').optional(),
+  photo: z.any().optional(),
 });
 
 type SightingFormData = z.infer<typeof SightingFormSchema>;
@@ -68,6 +70,12 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
         formData.append('birdName', selectedBird.name);
         formData.append('dateSeen', data.dateSeen.toISOString());
         formData.append('notes', data.notes || '');
+
+        // NOTE: Photo upload is not implemented in the action yet.
+        // This is a placeholder for when it is.
+        if (data.photo && data.photo[0]) {
+            formData.append('photo', data.photo[0]);
+        }
 
         const result = await addSighting({ message: '', success: false}, formData);
 
@@ -172,12 +180,38 @@ export function AddSightingDialog({ birds, userId }: { birds: Bird[], userId: st
                     )}
                 />
 
+                 <FormField
+                    control={form.control}
+                    name="photo"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Photo (Optional)</FormLabel>
+                             <FormControl>
+                                <div className="flex items-center gap-2">
+                                <ImageIcon className="h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    {...form.register("photo")} 
+                                    disabled={true} // Disabled until backend is ready
+                                    className="cursor-not-allowed"
+                                />
+                                </div>
+                            </FormControl>
+                             <p className="text-xs text-muted-foreground mt-1">
+                                Photo uploads are coming soon!
+                            </p>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
                 <FormField
                     control={form.control}
                     name="notes"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Notes</FormLabel>
+                            <FormLabel>Notes (Optional)</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="e.g., It was singing on a fence post..." {...field} />
                             </FormControl>
