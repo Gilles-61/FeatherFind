@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { useToast } from "@/hooks/use-toast";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -28,7 +29,19 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function AuthButton() {
   const { user, signInWithGoogle, signOutUser, loading } = useAuth();
+  const { toast } = useToast();
   const pathname = usePathname();
+
+  const handleGoogleSignIn = async () => {
+    const error = await signInWithGoogle();
+    if (error) {
+      toast({
+        title: 'Sign In Failed',
+        description: error,
+        variant: 'destructive',
+      });
+    }
+  };
 
   if (loading) {
     return <Button variant="outline" className="w-full" disabled>Loading...</Button>;
@@ -37,7 +50,7 @@ export function AuthButton() {
   // On the login page, we only want to show the Google Sign-In button
   if (pathname === '/login') {
      return (
-        <Button variant="outline" className="w-full" onClick={signInWithGoogle}>
+        <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
             <GoogleIcon className="mr-2 h-4 w-4" />
             Sign in with Google
         </Button>

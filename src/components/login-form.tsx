@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useState, useTransition } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import Link from 'next/link';
 
 const LoginFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -26,7 +25,6 @@ export function LoginForm() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
 
 
   const form = useForm<LoginFormData>({
@@ -125,7 +123,7 @@ export function LoginForm() {
                             className="absolute inset-y-0 right-0 h-full px-3"
                             onClick={() => setShowPassword(prev => !prev)}
                         >
-                            {showPassword ? <EyeOff /> : <Eye />}
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
                         </Button>
                     </div>

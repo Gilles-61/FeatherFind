@@ -111,7 +111,7 @@ export function SignupForm() {
                             className="absolute inset-y-0 right-0 h-full px-3"
                             onClick={() => setShowPassword(prev => !prev)}
                         >
-                            {showPassword ? <EyeOff /> : <Eye />}
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
                         </Button>
                     </div>
@@ -136,7 +136,7 @@ export function SignupForm() {
                             className="absolute inset-y-0 right-0 h-full px-3"
                             onClick={() => setShowConfirmPassword(prev => !prev)}
                         >
-                            {showConfirmPassword ? <EyeOff /> : <Eye />}
+                            {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             <span className="sr-only">{showConfirmPassword ? 'Hide password' : 'Show password'}</span>
                         </Button>
                     </div>

@@ -12,7 +12,6 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   sendPasswordResetEmail,
-  getAuth
 } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
@@ -31,8 +30,10 @@ const getFirebaseErrorMessage = (errorCode: string): string => {
       return 'The email address is not valid.';
     case 'auth/weak-password':
       return 'The password is too weak. Please use a stronger password.';
-     case 'auth/missing-password':
+    case 'auth/missing-password':
       return 'Password is required.';
+    case 'auth/unauthorized-domain':
+        return 'This domain is not authorized for authentication. Please add it to the list of authorized domains in your Firebase project settings.'
     default:
       return 'An unexpected error occurred. Please try again.';
   }
@@ -42,7 +43,7 @@ const getFirebaseErrorMessage = (errorCode: string): string => {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: () => Promise<string | null>;
   signUpWithEmail: (email: string, password: string, displayName: string) => Promise<string | null>;
   signInWithEmail: (email: string, password: string) => Promise<string | null>;
   signOutUser: () => Promise<void>;
@@ -52,7 +53,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({ 
   user: null, 
   loading: true,
-  signInWithGoogle: async () => {},
+  signInWithGoogle: async () => null,
   signUpWithEmail: async () => null,
   signInWithEmail: async () => null,
   signOutUser: async () => {},
@@ -89,13 +90,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (): Promise<string | null> => {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+      return null;
     } catch (error: any) {
       console.error("Google sign-in failed:", error);
-      // You might want to show a toast notification to the user here
+      return getFirebaseErrorMessage(error.code);
     }
   };
 
