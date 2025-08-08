@@ -10,6 +10,9 @@ import { AddSightingDialog } from "@/components/add-sighting-dialog";
 import { getBirds } from "@/lib/data";
 import type { Bird } from "@/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Compass, BrainCircuit, Bird as BirdIcon } from "lucide-react";
 
 export function MySightingsPage() {
   const { user } = useAuth();
@@ -70,9 +73,24 @@ export function MySightingsPage() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 border-2 border-dashed rounded-lg">
-          <p className="text-muted-foreground">You haven't logged any sightings yet.</p>
-          <p className="text-sm text-muted-foreground mt-2">Click "Add Sighting" to get started.</p>
+        <div className="text-center py-16 border-2 border-dashed rounded-lg flex flex-col items-center justify-center space-y-4">
+            <BirdIcon className="h-16 w-16 text-muted-foreground/50" />
+            <h2 className="text-2xl font-headline text-primary">No Sightings Yet</h2>
+            <p className="text-muted-foreground max-w-md">It looks like your birdwatching journal is empty. Add your first sighting, explore bird species, or get help from our AI.</p>
+            <div className="flex items-center gap-4 mt-4">
+                <Button asChild>
+                    <Link href="/explore">
+                        <Compass className="mr-2" />
+                        Explore Birds
+                    </Link>
+                </Button>
+                 <Button asChild variant="secondary">
+                    <Link href="/ai-guesser">
+                        <BrainCircuit className="mr-2" />
+                        Use AI Guesser
+                    </Link>
+                </Button>
+            </div>
         </div>
       )}
     </div>
