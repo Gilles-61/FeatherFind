@@ -6,6 +6,7 @@ import { ClientSearch } from "@/components/client-search";
 import { useLanguage } from "@/hooks/use-language";
 import { useEffect, useState } from "react";
 import type { Bird } from "@/types";
+import { AdBanner } from "@/components/ad-banner";
 
 export default function ExplorePage() {
   const [birds, setBirds] = useState<Bird[]>([]);
@@ -32,6 +33,7 @@ export default function ExplorePage() {
           <p className="text-lg text-muted-foreground mt-2">{pageDictionary.subtitle}</p>
       </div>
       <ClientSearch birds={birds} dictionary={pageDictionary} />
+      <AdBanner />
     </div>
   );
 }
