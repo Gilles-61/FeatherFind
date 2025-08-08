@@ -107,7 +107,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const currentUser = userCredential.user;
       if (currentUser) {
         await updateProfile(currentUser, { displayName });
-        // The onAuthStateChanged listener will handle setting the user and creating the Firestore doc.
+        await setDoc(doc(db, 'users', currentUser.uid), {
+          displayName: displayName,
+          email: email,
+          photoURL: '',
+          createdAt: serverTimestamp(),
+          lastLogin: serverTimestamp(),
+        });
       }
       return null;
     } catch (error: any) {
