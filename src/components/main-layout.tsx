@@ -2,10 +2,11 @@
 "use client";
 
 import { Home, Compass, BrainCircuit, Feather } from 'lucide-react';
-import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { AuthButton } from './auth-button';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -45,14 +46,24 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                         ))}
                     </SidebarMenu>
                 </SidebarContent>
+                 <SidebarFooter>
+                    <div className="group-data-[collapsible=icon]:hidden">
+                       <AuthButton />
+                    </div>
+                </SidebarFooter>
             </Sidebar>
             <SidebarInset>
-                <header className="sticky top-0 z-10 flex h-16 items-center justify-start border-b bg-background/80 backdrop-blur-sm px-4 md:hidden">
-                    <SidebarTrigger />
-                    <Link href="/" className="flex items-center gap-2 ml-4">
-                        <Feather className="w-7 h-7 text-primary" />
-                        <h1 className="text-xl font-headline font-bold text-primary">FeatherFind</h1>
-                    </Link>
+                <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 backdrop-blur-sm px-4 md:hidden">
+                    <div className="flex items-center gap-4">
+                        <SidebarTrigger />
+                        <Link href="/" className="flex items-center gap-2">
+                            <Feather className="w-7 h-7 text-primary" />
+                            <h1 className="text-xl font-headline font-bold text-primary">FeatherFind</h1>
+                        </Link>
+                    </div>
+                     <div className="md:hidden">
+                        <AuthButton />
+                    </div>
                 </header>
                 <main className="p-4 sm:p-6 lg:p-8">
                     {children}

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInAnonymously, type User } from 'firebase/auth';
+import { onAuthStateChanged, signInAnonymously, type User, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,41 +10,78 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  signInWithGoogle: () => Promise<void>;
+  signOutUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ 
+  user: null, 
+  loading: true,
+  signInWithGoogle: async () => {},
+  signOutUser: async () => {},
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const userRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(userRef);
-        if (!docSnap.exists()) {
-           await setDoc(userRef, { 
-              email: user.email || '',
-              createdAt: serverTimestamp() 
-          });
-        }
-        setUser(user);
-        setLoading(false);
+  const handleUser = async (user: User | null) => {
+    if (user) {
+      const userRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(userRef);
+      if (!docSnap.exists()) {
+         await setDoc(userRef, { 
+            displayName: user.displayName || 'Anonymous User',
+            email: user.email || '',
+            photoURL: user.photoURL || '',
+            createdAt: serverTimestamp(),
+            lastLogin: serverTimestamp(),
+        }, { merge: true });
       } else {
-        try {
-            const userCredential = await signInAnonymously(auth);
-            setUser(userCredential.user);
-        } catch (error) {
-            console.error("Anonymous sign-in failed:", error);
-        } finally {
-            setLoading(false);
-        }
+        await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
       }
-    });
+      setUser(user);
+    } else {
+      // If no user, sign in anonymously
+      try {
+        const userCredential = await signInAnonymously(auth);
+        handleUser(userCredential.user)
+      } catch (error) {
+        console.error("Anonymous sign-in failed:", error);
+      }
+    }
+    setLoading(false);
+  }
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, handleUser);
     return () => unsubscribe();
   }, []);
+
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      // onAuthStateChanged will handle the user state update
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+      setLoading(false);
+    }
+  };
+
+  const signOutUser = async () => {
+    setLoading(true);
+    try {
+      await signOut(auth);
+      // onAuthStateChanged will handle signing in anonymously
+    } catch (error) {
+      console.error("Sign-out failed:", error);
+    } finally {
+      // Let onAuthStateChanged handle loading state
+    }
+  };
+
 
   if (loading) {
     return (
@@ -59,7 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOutUser }}>
       {children}
     </AuthContext.Provider>
   );
