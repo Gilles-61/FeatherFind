@@ -31,7 +31,7 @@ export function ClientSearch({ birds }: { birds: Bird[] }) {
       {filteredBirds.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredBirds.map((bird) => (
-            <Link href={`/explore/${bird.id}`} key={bird.id} className="block">
+            <Link href={`/explore/${bird.id}`} key={bird.id} className="block group">
               <BirdCard bird={bird} />
             </Link>
           ))}

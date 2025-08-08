@@ -7,11 +7,13 @@ export default async function ExplorePage() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-headline font-bold text-primary">Explore Birds</h1>
-        <p className="text-lg text-muted-foreground mt-2">Discover the variety of birds in our database.</p>
+      <div className="space-y-4">
+        <div className="text-center">
+            <h1 className="text-4xl font-headline font-bold text-primary">Explore Birds</h1>
+            <p className="text-lg text-muted-foreground mt-2">Discover the variety of birds in our database.</p>
+        </div>
+        <ClientSearch birds={birds} />
       </div>
-      <ClientSearch birds={birds} />
     </div>
   );
 }
