@@ -26,9 +26,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const handleUser = async (user: User | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // Handle signed-in user
         const userRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userRef);
         if (!docSnap.exists()) {
@@ -44,36 +43,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         setUser(user);
       } else {
-        // Handle signed-out user
         setUser(null);
       }
       setLoading(false);
-    }
-    
-    const unsubscribe = onAuthStateChanged(auth, handleUser);
+    });
+
     return () => unsubscribe();
   }, []);
 
   const signInWithGoogle = async () => {
-    setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      // onAuthStateChanged will handle the user state update and loading state
     } catch (error) {
       console.error("Google sign-in failed:", error);
-      setLoading(false); // Only set loading false on error
     }
   };
 
   const signOutUser = async () => {
-    setLoading(true);
     try {
       await signOut(auth);
-      // onAuthStateChanged will set user to null and loading to false
     } catch (error) {
       console.error("Sign-out failed:", error);
-      setLoading(false); // Only set loading false on error
     }
   };
 
