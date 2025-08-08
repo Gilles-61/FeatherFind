@@ -6,7 +6,7 @@ import Image from 'next/image';
 export function BirdCard({ bird }: { bird: Bird }) {
   const aiHint = bird.name.toLowerCase();
   return (
-    <Card className="overflow-hidden h-full flex flex-col group-hover:shadow-xl transition-shadow duration-300">
+    <Card className="overflow-hidden h-full flex flex-col group hover:shadow-xl transition-shadow duration-300">
       <div className="aspect-video relative">
         <Image
           src={bird.imageUrl}
@@ -16,7 +16,7 @@ export function BirdCard({ bird }: { bird: Bird }) {
           data-ai-hint={aiHint}
         />
       </div>
-      <CardContent className="p-4 flex-grow">
+      <CardContent className="p-4 flex-grow flex flex-col justify-center">
         <h3 className="text-lg font-headline font-semibold text-center text-primary">{bird.name}</h3>
       </CardContent>
     </Card>

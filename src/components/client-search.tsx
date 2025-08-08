@@ -16,8 +16,8 @@ export function ClientSearch({ birds }: { birds: Bird[] }) {
   );
 
   return (
-    <div>
-      <div className="relative mb-8">
+    <div className="space-y-8">
+       <div className="relative">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
         <Input
           type="text"
