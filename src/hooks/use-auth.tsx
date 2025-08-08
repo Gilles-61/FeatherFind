@@ -33,9 +33,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false);
       } else {
         try {
-            await signInAnonymously(auth);
+            const userCredential = await signInAnonymously(auth);
+            setUser(userCredential.user);
         } catch (error) {
             console.error("Anonymous sign-in failed:", error);
+        } finally {
             setLoading(false);
         }
       }
@@ -50,13 +52,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col items-center gap-4">
           <FeatherIcon className="h-12 w-12 text-primary animate-pulse" />
           <p className="text-lg font-semibold font-headline text-primary">Loading FeatherFind...</p>
+          <Skeleton className="h-4 w-48" />
         </div>
       </div>
     );
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading: false }}>
+    <AuthContext.Provider value={{ user, loading }}>
       {children}
     </AuthContext.Provider>
   );
