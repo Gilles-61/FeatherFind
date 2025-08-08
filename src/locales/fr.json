@@ -32,5 +32,17 @@
             "showPassword": "Afficher le mot de passe",
             "hidePassword": "Masquer le mot de passe"
         }
+    },
+    "mainLayout": {
+        "nav": {
+            "mySightings": "Mes Observations",
+            "exploreBirds": "Explorer les Oiseaux",
+            "aiTextGuesser": "Devin IA par Texte",
+            "aiPhotoGuesser": "Devin IA par Photo"
+        },
+        "authButton": {
+            "profile": "Profil",
+            "logout": "Se déconnecter"
+        }
     }
 }

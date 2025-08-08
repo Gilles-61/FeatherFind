@@ -32,5 +32,17 @@
             "showPassword": "Show password",
             "hidePassword": "Hide password"
         }
+    },
+    "mainLayout": {
+        "nav": {
+            "mySightings": "My Sightings",
+            "exploreBirds": "Explore Birds",
+            "aiTextGuesser": "AI Text Guesser",
+            "aiPhotoGuesser": "AI Photo Guesser"
+        },
+        "authButton": {
+            "profile": "Profile",
+            "logout": "Log out"
+        }
     }
 }

@@ -5,28 +5,41 @@ import { Home, Compass, BrainCircuit, Feather, Camera } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AuthButton } from './auth-button';
 import { useAuth } from '@/hooks/use-auth';
+import { getDictionary } from '@/lib/i18n';
+
+// Defaulting to 'en', a language switcher would be needed for dynamic language changes.
+const lang = 'en';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const { user, loading } = useAuth();
+    const [dictionary, setDictionary] = useState<any>(null);
 
-    const navItems = [
-        { href: '/', icon: Home, label: 'My Sightings' },
-        { href: '/explore', icon: Compass, label: 'Explore Birds' },
-        { href: '/ai-guesser', icon: BrainCircuit, label: 'AI Text Guesser' },
-        { href: '/ai-photo-guesser', icon: Camera, label: 'AI Photo Guesser' },
-    ];
+    useEffect(() => {
+        const fetchDictionary = async () => {
+            const dict = await getDictionary(lang);
+            setDictionary(dict.mainLayout);
+        };
+        fetchDictionary();
+    }, []);
 
-    if (loading) {
+    if (loading || (user && !dictionary)) {
         return null;
     }
 
     if (!user) {
         return <main>{children}</main>;
     }
+    
+    const navItems = [
+        { href: '/', icon: Home, label: dictionary.nav.mySightings },
+        { href: '/explore', icon: Compass, label: dictionary.nav.exploreBirds },
+        { href: '/ai-guesser', icon: BrainCircuit, label: dictionary.nav.aiTextGuesser },
+        { href: '/ai-photo-guesser', icon: Camera, label: dictionary.nav.aiPhotoGuesser },
+    ];
 
     return (
         <SidebarProvider>
@@ -59,7 +72,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 </SidebarContent>
                  <SidebarFooter>
                     <div className="group-data-[collapsible=icon]:hidden">
-                       <AuthButton />
+                       <AuthButton dictionary={dictionary.authButton} />
                     </div>
                  </SidebarFooter>
             </Sidebar>
@@ -73,7 +86,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                         </Link>
                     </div>
                      <div className="md:hidden">
-                        <AuthButton />
+                        <AuthButton dictionary={dictionary.authButton} />
                     </div>
                 </header>
                 <main className="p-4 sm:p-6 lg:p-8">

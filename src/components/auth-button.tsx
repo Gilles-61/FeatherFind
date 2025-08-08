@@ -28,7 +28,7 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 
-export function AuthButton() {
+export function AuthButton({ dictionary }: { dictionary?: any }) {
   const { user, signInWithGoogle, signOutUser, loading } = useAuth();
   const { toast } = useToast();
   const pathname = usePathname();
@@ -84,13 +84,13 @@ export function AuthButton() {
           <DropdownMenuItem asChild>
              <Link href="/profile">
                 <UserIcon className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <span>{dictionary?.profile || 'Profile'}</span>
              </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={signOutUser}>
             <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
+            <span>{dictionary?.logout || 'Log out'}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

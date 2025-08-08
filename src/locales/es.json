@@ -32,5 +32,17 @@
             "showPassword": "Mostrar contraseña",
             "hidePassword": "Ocultar contraseña"
         }
+    },
+    "mainLayout": {
+        "nav": {
+            "mySightings": "Mis Avistamientos",
+            "exploreBirds": "Explorar Aves",
+            "aiTextGuesser": "Adivinador IA de Texto",
+            "aiPhotoGuesser": "Adivinador IA de Fotos"
+        },
+        "authButton": {
+            "profile": "Perfil",
+            "logout": "Cerrar Sesión"
+        }
     }
 }
