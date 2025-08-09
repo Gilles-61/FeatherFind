@@ -1,3 +1,4 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -16,11 +17,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
-    ],
-  },
-  devIndicators: {
-    allowedDevOrigins: [
-        "*.cloudworkstations.dev",
     ],
   },
 };
