@@ -68,30 +68,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const { auth, db } = getFirebaseServices();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
+      if (user && !user.isAnonymous) {
         const userRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userRef);
         if (!docSnap.exists()) {
            await setDoc(userRef, { 
-              displayName: user.displayName || 'Anonymous User',
+              displayName: user.displayName || 'New User',
               email: user.email || '',
               photoURL: user.photoURL || '',
               createdAt: serverTimestamp(),
               lastLogin: serverTimestamp(),
-              isAnonymous: user.isAnonymous,
           }, { merge: true });
         } else {
-          await setDoc(userRef, { lastLogin: serverTimestamp(), isAnonymous: user.isAnonymous }, { merge: true });
+          await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
         }
         setUser(user);
         setLoading(false);
       } else {
-        // If no user, sign in anonymously
-        signInAnonymously(auth).catch((error) => {
-          console.error("Anonymous sign-in failed:", error);
-          // Still set loading to false even if anonymous sign-in fails
-          setLoading(false);
-        });
+        setUser(null);
+        setLoading(false);
       }
     });
 
