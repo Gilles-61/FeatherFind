@@ -37,7 +37,8 @@
         "nav": {
             "mySightings": "My Sightings",
             "exploreBirds": "Explore Birds",
-            "aiGuesser": "AI Guesser"
+            "aiGuesser": "AI Guesser",
+            "photoGuesser": "Photo Guesser"
         },
         "authButton": {
             "profile": "Profile",

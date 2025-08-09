@@ -37,7 +37,8 @@
         "nav": {
             "mySightings": "Mis Avistamientos",
             "exploreBirds": "Explorar Aves",
-            "aiGuesser": "Adivinador de IA"
+            "aiGuesser": "Adivinador de IA",
+            "photoGuesser": "Adivinador de Fotos"
         },
         "authButton": {
             "profile": "Perfil",

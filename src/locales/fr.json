@@ -37,7 +37,8 @@
         "nav": {
             "mySightings": "Mes Observations",
             "exploreBirds": "Explorer les Oiseaux",
-            "aiGuesser": "Devin IA"
+            "aiGuesser": "Devin IA",
+            "photoGuesser": "Devin Photo"
         },
         "authButton": {
             "profile": "Profil",
