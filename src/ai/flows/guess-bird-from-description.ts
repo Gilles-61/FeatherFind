@@ -3,11 +3,10 @@
 /**
  * @fileOverview An AI flow for identifying a bird species from a user's description.
  * 
- * - guessBirdFromDescription - A function that takes a description and returns a likely bird species.
+ * - guessBirdFromDescription - a function that takes a description and returns a likely bird species.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
 import { birds } from '@/data/birds';
 import type { BirdResult } from '@/types';
 import { BirdResultSchema } from '@/types';
@@ -50,3 +49,4 @@ export async function guessBirdFromDescription(description: string): Promise<Bir
     
     return output;
 }
+
