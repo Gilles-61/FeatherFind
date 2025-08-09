@@ -36,7 +36,8 @@
     "mainLayout": {
         "nav": {
             "mySightings": "My Sightings",
-            "exploreBirds": "Explore Birds"
+            "exploreBirds": "Explore Birds",
+            "aiGuesser": "AI Guesser"
         },
         "authButton": {
             "profile": "Profile",

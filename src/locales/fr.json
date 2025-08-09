@@ -36,7 +36,8 @@
     "mainLayout": {
         "nav": {
             "mySightings": "Mes Observations",
-            "exploreBirds": "Explorer les Oiseaux"
+            "exploreBirds": "Explorer les Oiseaux",
+            "aiGuesser": "Devin IA"
         },
         "authButton": {
             "profile": "Profil",

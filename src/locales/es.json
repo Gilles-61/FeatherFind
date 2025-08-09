@@ -36,7 +36,8 @@
     "mainLayout": {
         "nav": {
             "mySightings": "Mis Avistamientos",
-            "exploreBirds": "Explorar Aves"
+            "exploreBirds": "Explorar Aves",
+            "aiGuesser": "Adivinador de IA"
         },
         "authButton": {
             "profile": "Perfil",
