@@ -1,6 +1,11 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    allowedDevOrigins: [
+      "*.cluster-wfwbjypkvnfkaqiqzlu3ikwjhe.cloudworkstations.dev",
+    ],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
