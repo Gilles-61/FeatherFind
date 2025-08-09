@@ -2,7 +2,7 @@
 {
     "welcomePage": {
         "welcome": "Bienvenido a FeatherFind",
-        "subtitle": "Tu compañero personal de observación de aves. Registra tus avistamientos, explora nuevas especies y deja que nuestra IA te ayude a identificar aves misteriosas.",
+        "subtitle": "Tu compañero personal de observación de aves. Registra tus avistamientos y explora nuevas especies.",
         "getStarted": "Empezar"
     },
     "loginPage": {
@@ -50,7 +50,6 @@
         "noSightings": "Aún no hay avistamientos",
         "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento o explora especies de aves.",
         "exploreBirds": "Explorar Aves",
-        "useAiGuesser": "Usar Adivinador IA",
         "loadMore": "Cargar Más"
     },
     "explorePage": {

@@ -12,7 +12,7 @@ import { getBirds } from "@/lib/data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Compass, BrainCircuit, Bird as BirdIcon, Loader2 } from "lucide-react";
+import { Compass, Bird as BirdIcon, Loader2 } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 
 const SIGHTINGS_PER_PAGE = 8;
@@ -113,12 +113,6 @@ export function MySightingsPage() {
                     <Link href="/explore">
                         <Compass className="mr-2" />
                         {pageDictionary.exploreBirds}
-                    </Link>
-                </Button>
-                 <Button asChild variant="secondary">
-                    <Link href="/ai-guesser">
-                        <BrainCircuit className="mr-2" />
-                        {pageDictionary.useAiGuesser}
                     </Link>
                 </Button>
             </div>

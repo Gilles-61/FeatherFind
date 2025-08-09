@@ -2,7 +2,7 @@
 {
     "welcomePage": {
         "welcome": "Welcome to FeatherFind",
-        "subtitle": "Your personal birdwatching companion. Log your sightings, explore new species, and let our AI help you identify mysterious birds.",
+        "subtitle": "Your personal birdwatching companion. Log your sightings and explore new species.",
         "getStarted": "Get Started"
     },
     "loginPage": {
@@ -50,7 +50,6 @@
         "noSightings": "No Sightings Yet",
         "noSightingsDescription": "It looks like your birdwatching journal is empty. Add your first sighting or explore bird species.",
         "exploreBirds": "Explore Birds",
-        "useAiGuesser": "Use AI Guesser",
         "loadMore": "Load More"
     },
     "explorePage": {

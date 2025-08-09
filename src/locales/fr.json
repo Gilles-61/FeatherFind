@@ -2,7 +2,7 @@
 {
     "welcomePage": {
         "welcome": "Bienvenue sur FeatherFind",
-        "subtitle": "Votre compagnon personnel d'observation des oiseaux. Enregistrez vos observations, explorez de nouvelles espèces et laissez notre IA vous aider à identifier les oiseaux mystérieux.",
+        "subtitle": "Votre compagnon personnel d'observation des oiseaux. Enregistrez vos observations et explorez de nouvelles espèces.",
         "getStarted": "Commencer"
     },
     "loginPage": {
@@ -50,7 +50,6 @@
         "noSightings": "Aucune observation pour l'instant",
         "noSightingsDescription": "Il semble que votre journal d'observation d'oiseaux soit vide. Ajoutez votre première observation ou explorez des espèces d'oiseaux.",
         "exploreBirds": "Explorer les Oiseaux",
-        "useAiGuesser": "Utiliser le Devin IA",
         "loadMore": "Charger Plus"
     },
     "explorePage": {

@@ -1,6 +1,7 @@
+
 "use client";
 
-import { Home, Compass, Feather } from 'lucide-react';
+import { Home, Compass, Feather, BrainCircuit } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
