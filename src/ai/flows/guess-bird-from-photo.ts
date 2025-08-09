@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview An AI flow for identifying a bird species from a user's photo.
@@ -8,18 +7,8 @@
 
 import { ai } from '@/ai/genkit';
 import { birds } from '@/data/birds';
-import type { BirdResult } from '@/types';
-import { BirdResultSchema } from '@/types';
-import { z } from 'zod';
-
-const GuessBirdFromPhotoInputSchema = z.object({
-  photoDataUri: z
-    .string()
-    .describe(
-      "A photo of a bird, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
-    ),
-});
-export type GuessBirdFromPhotoInput = z.infer<typeof GuessBirdFromPhotoInputSchema>;
+import type { BirdResult, GuessBirdFromPhotoInput } from '@/types';
+import { BirdResultSchema, GuessBirdFromPhotoInputSchema } from '@/types';
 
 /**
  * An AI flow that guesses a bird species based on a photo.

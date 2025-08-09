@@ -1,8 +1,7 @@
-
 "use server";
 
-import { guessBirdFromPhoto, GuessBirdFromPhotoInput } from "@/ai/flows/guess-bird-from-photo";
-import { BirdResult, BirdResultSchema } from "@/types";
+import { guessBirdFromPhoto } from "@/ai/flows/guess-bird-from-photo";
+import { BirdResult, BirdResultSchema, GuessBirdFromPhotoInput } from "@/types";
 
 interface ActionResult {
     result: BirdResult | null;

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Home, Compass, Feather, BrainCircuit, Camera } from 'lucide-react';

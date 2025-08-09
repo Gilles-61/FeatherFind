@@ -1,4 +1,3 @@
-
 import type { Timestamp, DocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { z } from 'zod';
 
@@ -33,3 +32,13 @@ export const BirdResultSchema = z.object({
   reasoning: z.string().describe('A brief explanation for why the AI chose this bird based on the description.'),
 });
 export type BirdResult = z.infer<typeof BirdResultSchema>;
+
+
+export const GuessBirdFromPhotoInputSchema = z.object({
+  photoDataUri: z
+    .string()
+    .describe(
+      "A photo of a bird, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+    ),
+});
+export type GuessBirdFromPhotoInput = z.infer<typeof GuessBirdFromPhotoInputSchema>;
