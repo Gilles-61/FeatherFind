@@ -18,13 +18,6 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    // Exclude problematic modules from server-side bundle
-    if (isServer) {
-      config.externals.push('@opentelemetry/exporter-jaeger', '@genkit-ai/firebase');
-    }
-    return config;
-  },
 };
 
 export default nextConfig;
