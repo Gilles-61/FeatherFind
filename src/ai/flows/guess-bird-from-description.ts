@@ -4,23 +4,13 @@
  * @fileOverview An AI flow for identifying a bird species from a user's description.
  * 
  * - guessBirdFromDescription - A function that takes a description and returns a likely bird species.
- * - BirdResultSchema - The Zod schema for the output of the AI flow.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { birds } from '@/data/birds';
-
-/**
- * The Zod schema for the result of the bird guessing flow.
- * It ensures the AI's output matches the expected format.
- */
-export const BirdResultSchema = z.object({
-  birdId: z.string().describe('The machine-readable ID of the bird, e.g., "american_robin". This must be one of the provided valid IDs.'),
-  birdName: z.string().describe('The common name of the bird, e.g., "American Robin".'),
-  reasoning: z.string().describe('A brief explanation for why the AI chose this bird based on the description.'),
-});
-export type BirdResult = z.infer<typeof BirdResultSchema>;
+import type { BirdResult } from '@/app/ai-guesser/actions';
+import { BirdResultSchema } from '@/app/ai-guesser/actions';
 
 /**
  * An AI flow that guesses a bird species based on a textual description.
