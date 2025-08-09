@@ -36,9 +36,7 @@
     "mainLayout": {
         "nav": {
             "mySightings": "Mis Avistamientos",
-            "exploreBirds": "Explorar Aves",
-            "aiTextGuesser": "Adivinador IA de Texto",
-            "aiPhotoGuesser": "Adivinador IA de Fotos"
+            "exploreBirds": "Explorar Aves"
         },
         "authButton": {
             "profile": "Perfil",
@@ -50,7 +48,7 @@
         "subtitle": "Un registro de todas las aves que has avistado.",
         "addSighting": "Añadir Avistamiento",
         "noSightings": "Aún no hay avistamientos",
-        "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento, explora especies de aves o pide ayuda a nuestra IA.",
+        "noSightingsDescription": "Parece que tu diario de observación de aves está vacío. Añade tu primer avistamiento o explora especies de aves.",
         "exploreBirds": "Explorar Aves",
         "useAiGuesser": "Usar Adivinador IA",
         "loadMore": "Cargar Más"
@@ -60,44 +58,5 @@
         "subtitle": "Descubre la variedad de aves en nuestra base de datos.",
         "searchPlaceholder": "Buscar un pájaro...",
         "noResults": "No se encontraron aves que coincidan con tu búsqueda."
-    },
-    "aiGuesserPage": {
-        "title": "Adivinador IA de Texto",
-        "subtitle": "Describe un pájaro que has visto y nuestra IA intentará identificarlo.",
-        "placeholder": "p. ej., 'Un pájaro pequeño con el pecho rojo brillante y la cabeza negra, visto a menudo en invierno.'",
-        "buttonIdle": "Adivinar el Pájaro",
-        "buttonPending": "Identificando...",
-        "errorTitle": "Error",
-        "suggestionsTitle": "Sugerencias de la IA",
-        "errors": {
-            "descriptionTooShort": "Por favor, proporciona una descripción más detallada.",
-            "noBirdsFound": "No se pudo identificar ningún pájaro a partir de tu descripción. Por favor, intenta describirlo de otra manera.",
-            "unavailable": "El adivinador de IA no está disponible en este momento. Por favor, inténtalo de nuevo más tarde."
-        }
-    },
-    "aiPhotoGuesserPage": {
-        "title": "Adivinador IA de Fotos",
-        "subtitle": "Sube una foto de un pájaro y nuestra IA intentará identificarlo.",
-        "buttonIdle": "Adivinar el Pájaro",
-        "buttonPending": "Identificando...",
-        "errorTitle": "Error",
-        "suggestionsTitle": "Sugerencias de la IA",
-        "uploadTab": "Subir Foto",
-        "cameraTab": "Usar Cámara",
-        "uploadPlaceholder": "Haz clic para buscar o arrastra una imagen",
-        "imageAlt": "Vista previa del pájaro",
-        "retakeButton": "Tomar de nuevo",
-        "captureButton": "Capturar Foto",
-        "cameraError": {
-            "title": "Acceso a la Cámara Denegado",
-            "description": "Por favor, habilita los permisos de la cámara en la configuración de tu navegador para usar esta función.",
-            "permission": "Para usar tu cámara, por favor concede permiso en la configuración de tu navegador."
-        },
-        "errors": {
-            "photoRequired": "Por favor, sube una foto.",
-            "invalid_photo": "Foto inválida.",
-            "noBirdsFound": "No se pudo identificar ningún pájaro en tu foto. Por favor, intenta con una imagen diferente.",
-            "unavailable": "El adivinador de IA no está disponible en este momento. Por favor, inténtalo de nuevo más tarde."
-        }
     }
 }

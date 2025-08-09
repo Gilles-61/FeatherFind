@@ -36,9 +36,7 @@
     "mainLayout": {
         "nav": {
             "mySightings": "My Sightings",
-            "exploreBirds": "Explore Birds",
-            "aiTextGuesser": "AI Text Guesser",
-            "aiPhotoGuesser": "AI Photo Guesser"
+            "exploreBirds": "Explore Birds"
         },
         "authButton": {
             "profile": "Profile",
@@ -50,7 +48,7 @@
         "subtitle": "A log of all the birds you've spotted.",
         "addSighting": "Add Sighting",
         "noSightings": "No Sightings Yet",
-        "noSightingsDescription": "It looks like your birdwatching journal is empty. Add your first sighting, explore bird species, or get help from our AI.",
+        "noSightingsDescription": "It looks like your birdwatching journal is empty. Add your first sighting or explore bird species.",
         "exploreBirds": "Explore Birds",
         "useAiGuesser": "Use AI Guesser",
         "loadMore": "Load More"
@@ -60,44 +58,5 @@
         "subtitle": "Discover the variety of birds in our database.",
         "searchPlaceholder": "Search for a bird...",
         "noResults": "No birds found matching your search."
-    },
-    "aiGuesserPage": {
-        "title": "AI Text Guesser",
-        "subtitle": "Describe a bird you've seen, and our AI will try to identify it for you.",
-        "placeholder": "e.g., 'A small bird with a bright red breast and a black head, often seen in winter.'",
-        "buttonIdle": "Guess the Bird",
-        "buttonPending": "Identifying...",
-        "errorTitle": "Error",
-        "suggestionsTitle": "AI Suggestions",
-        "errors": {
-            "descriptionTooShort": "Please provide a more detailed description.",
-            "noBirdsFound": "Could not identify any birds from your description. Please try describing it differently.",
-            "unavailable": "The AI guesser is currently unavailable. Please try again later."
-        }
-    },
-    "aiPhotoGuesserPage": {
-        "title": "AI Photo Guesser",
-        "subtitle": "Upload a photo of a bird, and our AI will try to identify it for you.",
-        "buttonIdle": "Guess the Bird",
-        "buttonPending": "Identifying...",
-        "errorTitle": "Error",
-        "suggestionsTitle": "AI Suggestions",
-        "uploadTab": "Upload Photo",
-        "cameraTab": "Use Camera",
-        "uploadPlaceholder": "Click to browse or drop an image",
-        "imageAlt": "Bird preview",
-        "retakeButton": "Retake",
-        "captureButton": "Capture Photo",
-        "cameraError": {
-            "title": "Camera Access Denied",
-            "description": "Please enable camera permissions in your browser settings to use this feature.",
-            "permission": "To use your camera, please grant permission in your browser settings."
-        },
-        "errors": {
-            "photoRequired": "Please upload a photo.",
-            "invalid_photo": "Invalid photo provided.",
-            "noBirdsFound": "Could not identify any birds from your photo. Please try a different image.",
-            "unavailable": "The AI guesser is currently unavailable. Please try again later."
-        }
     }
 }

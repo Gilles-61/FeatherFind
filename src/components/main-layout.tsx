@@ -1,7 +1,6 @@
-
 "use client";
 
-import { Home, Compass, BrainCircuit, Feather, Camera } from 'lucide-react';
+import { Home, Compass, Feather } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarHeader, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -27,8 +26,6 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     const navItems = [
         { href: '/', icon: Home, label: dictionary.mainLayout.nav.mySightings },
         { href: '/explore', icon: Compass, label: dictionary.mainLayout.nav.exploreBirds },
-        { href: '/ai-guesser', icon: BrainCircuit, label: dictionary.mainLayout.nav.aiTextGuesser },
-        { href: '/ai-photo-guesser', icon: Camera, label: dictionary.mainLayout.nav.aiPhotoGuesser },
     ];
 
     return (
