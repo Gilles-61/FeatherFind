@@ -49,4 +49,3 @@ export async function guessBirdFromDescription(description: string): Promise<Bir
     
     return output;
 }
-

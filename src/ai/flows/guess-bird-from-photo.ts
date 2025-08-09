@@ -9,6 +9,7 @@ import { ai } from '@/ai/genkit';
 import { birds } from '@/data/birds';
 import type { BirdResult, GuessBirdFromPhotoInput } from '@/types';
 import { BirdResultSchema, GuessBirdFromPhotoInputSchema } from '@/types';
+import {z} from 'genkit';
 
 /**
  * An AI flow that guesses a bird species based on a photo.
