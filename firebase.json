@@ -2,5 +2,10 @@
 {
   "firestore": {
     "rules": "firestore.rules"
+  },
+  "apphosting": {
+    "backend": {
+      "source": "."
+    }
   }
 }

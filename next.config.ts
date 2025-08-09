@@ -1,12 +1,12 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    allowedDevOrigins: [
-        "https://*.cloudworkstations.dev",
-        "https://*.firebase.studio"
-    ]
-  },
+  // experimental: {
+  //   allowedDevOrigins: [
+  //       "https://*.cloudworkstations.dev",
+  //       "https://*.firebase.studio"
+  //   ]
+  // },
   typescript: {
     ignoreBuildErrors: true,
   },
