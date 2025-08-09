@@ -12,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   sendPasswordResetEmail,
+  signInAnonymously,
 } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
@@ -71,20 +72,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const docSnap = await getDoc(userRef);
         if (!docSnap.exists()) {
            await setDoc(userRef, { 
-              displayName: user.displayName || 'New User',
+              displayName: user.displayName || 'Anonymous User',
               email: user.email || '',
               photoURL: user.photoURL || '',
               createdAt: serverTimestamp(),
               lastLogin: serverTimestamp(),
+              isAnonymous: user.isAnonymous,
           }, { merge: true });
         } else {
-          await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+          await setDoc(userRef, { lastLogin: serverTimestamp(), isAnonymous: user.isAnonymous }, { merge: true });
         }
         setUser(user);
+        setLoading(false);
       } else {
-        setUser(null);
+        // If no user, sign in anonymously
+        signInAnonymously(auth).catch((error) => {
+          console.error("Anonymous sign-in failed:", error);
+          // Still set loading to false even if anonymous sign-in fails
+          setLoading(false);
+        });
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
