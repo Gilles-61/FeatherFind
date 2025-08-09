@@ -14,8 +14,4 @@ export const ai = genkit({
   plugins: [
     googleAI(),
   ],
-  // Log developer-friendly errors to the console
-  logLevel: 'debug',
-  // Perform OpenTelemetry instrumentation and enable traces locally
-  enableTracing: true,
 });
