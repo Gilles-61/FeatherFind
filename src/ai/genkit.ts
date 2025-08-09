@@ -11,10 +11,4 @@ export const ai = genkit({
   plugins: [
     googleAI(),
   ],
-  // Log events to the console for debugging.
-  // Set to 'warn' or 'error' in production environments.
-  logLevel: 'debug',
-  // Enable OpenTelemetry for tracing and monitoring.
-  // This is useful for debugging and performance analysis.
-  enableTracing: true,
 });
