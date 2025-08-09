@@ -3,7 +3,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { collection, addDoc, Timestamp, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { getFirebaseServices } from '@/lib/firebase';
 import { z } from "zod";
 
 const SightingFormSchema = z.object({
@@ -50,6 +50,7 @@ export async function addSighting(prevState: SightingFormState, formData: FormDa
 
 
   try {
+    const { db } = getFirebaseServices();
     const sightingsRef = collection(db, `users/${userId}/sightings`);
     await addDoc(sightingsRef, {
       birdId,
@@ -93,6 +94,7 @@ export async function updateSighting(sightingId: string, prevState: SightingForm
   }
   
   try {
+    const { db } = getFirebaseServices();
     const sightingRef = doc(db, `users/${userId}/sightings`, sightingId);
     await updateDoc(sightingRef, {
       birdId,
@@ -115,6 +117,7 @@ export async function deleteSighting(userId: string, sightingId: string) {
         return { success: false, message: 'User ID and Sighting ID are required.' };
     }
     try {
+        const { db } = getFirebaseServices();
         const sightingRef = doc(db, `users/${userId}/sightings`, sightingId);
         await deleteDoc(sightingRef);
         revalidatePath('/');

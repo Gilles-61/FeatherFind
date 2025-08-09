@@ -2,7 +2,7 @@
 import { birds as localBirds } from '@/data/birds';
 import type { Bird, Sighting, PaginatedSightings } from '@/types';
 import { collection, getDocs, doc, getDoc, query, orderBy, limit, startAfter, type DocumentSnapshot, type DocumentData } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { getFirebaseServices } from '@/lib/firebase';
 
 
 // --- Bird Data ---
@@ -17,6 +17,7 @@ export async function getBirds(): Promise<Bird[]> {
   /*
   // Real Firestore implementation:
   try {
+    const { db } = getFirebaseServices();
     const birdsCol = collection(db, 'birds');
     const birdSnapshot = await getDocs(birdsCol);
     const birdList = birdSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Bird));
@@ -41,6 +42,7 @@ export async function getBirdById(id: string): Promise<Bird | undefined> {
   /*
   // Real Firestore implementation:
   try {
+    const { db } = getFirebaseServices();
     const birdRef = doc(db, 'birds', id);
     const birdSnap = await getDoc(birdRef);
     if (birdSnap.exists()) {
@@ -78,6 +80,7 @@ export async function getUserSightings(
     }
 
     try {
+        const { db } = getFirebaseServices();
         const sightingsRef = collection(db, `users/${userId}/sightings`);
         
         const queryConstraints = [orderBy('dateSeen', 'desc')];

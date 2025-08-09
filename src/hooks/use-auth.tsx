@@ -14,7 +14,7 @@ import {
   sendPasswordResetEmail,
   signInAnonymously,
 } from 'firebase/auth';
-import { auth, db } from '@/lib/firebase';
+import { getFirebaseServices } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const { auth, db } = getFirebaseServices();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userRef = doc(db, 'users', user.uid);
@@ -99,6 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithGoogle = async (): Promise<string | null> => {
     try {
+      const { auth } = getFirebaseServices();
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       return null;
@@ -110,6 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUpWithEmail = async (email: string, password: string, displayName: string): Promise<string | null> => {
     try {
+      const { auth, db } = getFirebaseServices();
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const currentUser = userCredential.user;
       if (currentUser) {
@@ -131,6 +134,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInWithEmail = async (email: string, password: string): Promise<string | null> => {
      try {
+      const { auth } = getFirebaseServices();
       await signInWithEmailAndPassword(auth, email, password);
       // The onAuthStateChanged listener will handle the rest.
       return null;
@@ -142,6 +146,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOutUser = async () => {
     try {
+      const { auth } = getFirebaseServices();
       await signOut(auth);
     } catch (error) {
       console.error("Sign-out failed:", error);
@@ -150,6 +155,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   
   const sendPasswordReset = async (email: string): Promise<string | null> => {
     try {
+      const { auth } = getFirebaseServices();
       await sendPasswordResetEmail(auth, email);
       return null;
     } catch (error: any) {
