@@ -2,19 +2,7 @@
 "use server";
 
 import { guessBirdFromDescription } from "@/ai/flows/guess-bird-from-description";
-import { z } from 'zod';
-
-/**
- * The Zod schema for the result of the bird guessing flow.
- * It ensures the AI's output matches the expected format.
- */
-export const BirdResultSchema = z.object({
-  birdId: z.string().describe('The machine-readable ID of the bird, e.g., "american_robin". This must be one of the provided valid IDs.'),
-  birdName: z.string().describe('The common name of the bird, e.g., "American Robin".'),
-  reasoning: z.string().describe('A brief explanation for why the AI chose this bird based on the description.'),
-});
-export type BirdResult = z.infer<typeof BirdResultSchema>;
-
+import { BirdResult, BirdResultSchema } from "@/types";
 
 interface ActionResult {
     result: BirdResult | null;
@@ -28,7 +16,13 @@ export async function guessBirdFromDescriptionAction(description: string): Promi
 
     try {
         const result = await guessBirdFromDescription(description);
-        return { result, error: null };
+        // We can validate the output here if we want, but the flow already does it.
+        const validation = BirdResultSchema.safeParse(result);
+        if (!validation.success) {
+            console.error("AI output failed validation:", validation.error);
+            return { result: null, error: "The AI returned an invalid data format." };
+        }
+        return { result: validation.data, error: null };
     } catch (e: any) {
         console.error(e);
         return { result: null, error: e.message || "An unexpected error occurred." };

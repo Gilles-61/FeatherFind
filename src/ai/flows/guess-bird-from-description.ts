@@ -9,8 +9,8 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { birds } from '@/data/birds';
-import type { BirdResult } from '@/app/ai-guesser/actions';
-import { BirdResultSchema } from '@/app/ai-guesser/actions';
+import type { BirdResult } from '@/types';
+import { BirdResultSchema } from '@/types';
 
 /**
  * An AI flow that guesses a bird species based on a textual description.
